@@ -4,6 +4,12 @@ import Image from "next/image";
 
 const SoftwareServices = () => {
   const [hoveredService, setHoveredService] = useState(null);
+   const [openServiceId, setOpenServiceId] = useState(null);
+
+  const toggleService = (id) => {
+    setOpenServiceId(openServiceId === id ? null : id);
+  };
+
 
   const services = [
     {
@@ -165,7 +171,7 @@ const SoftwareServices = () => {
       </section>
 
       {/* Services Section */}
-      <section className="relative px-6 py-20 lg:px-12">
+           <section className="relative px-6 py-20 lg:px-12">
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-16">
             {/* Services List */}
@@ -173,40 +179,47 @@ const SoftwareServices = () => {
               {services.map((service) => (
                 <div
                   key={service.id}
-                  className="group cursor-pointer border-b border-emerald-900 hover:border-emerald-600 transition-all duration-300"
-                  onMouseEnter={() => setHoveredService(service)}
-                  onMouseLeave={() => setHoveredService(null)}
+                  className="border-b border-emerald-900 hover:border-emerald-600 transition-all duration-300"
                 >
-                  <div className="py-6 lg:py-8 flex items-start gap-6">
-                    <span className="text-emerald-700 font-mono text-sm mt-1 group-hover:text-emerald-400 transition-colors duration-300">
-                      {service.number}
-                    </span>
-
-                    <div className="flex-1">
+                  {/* Heading Row */}
+                  <div
+                    className="py-6 flex items-center justify-between cursor-pointer"
+                    onClick={() => toggleService(service.id)}
+                  >
+                    <div className="flex items-start gap-4">
+                      <span className="text-emerald-700 font-mono text-sm mt-1">
+                        {service.number}
+                      </span>
                       <h3
-                        className={`text-xl lg:text-2xl font-bold mb-3 transition-all duration-300 ${
-                          hoveredService?.id === service.id
+                        className={`text-xl lg:text-2xl font-bold ${
+                          openServiceId === service.id
                             ? "text-emerald-300"
-                            : "text-white group-hover:text-white"
+                            : "text-white"
                         }`}
                       >
                         {service.title}
                       </h3>
-
-                      <p
-                        className={`text-gray-500 leading-relaxed transition-all duration-300 ${
-                          hoveredService?.id === service.id
-                            ? "text-gray-300"
-                            : "group-hover:text-gray-400"
-                        }`}
-                      >
-                        {service.description}
-                      </p>
                     </div>
 
-                    <div className="w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                    </div>
+                    {/* Arrow Icon */}
+                    <span
+                      className={`transform transition-transform duration-300 ${
+                        openServiceId === service.id ? "rotate-180" : "rotate-0"
+                      }`}
+                    >
+                      ▼
+                    </span>
+                  </div>
+
+                  {/* Description */}
+                  <div
+                    className={`overflow-hidden transition-all duration-300 ${
+                      openServiceId === service.id ? "max-h-40" : "max-h-0"
+                    }`}
+                  >
+                    <p className="text-gray-400 leading-relaxed px-10 pb-4">
+                      {service.description}
+                    </p>
                   </div>
                 </div>
               ))}
@@ -214,42 +227,30 @@ const SoftwareServices = () => {
 
             {/* Project Sample Display */}
             <div className="sticky top-50 h-fit">
-              <div className="relative">
-                <div
-                  className={`rounded-2xl p-8 backdrop-blur-sm transition-all duration-500 ease-out transform ${
-                    hoveredService
-                      ? "translate-x-0 opacity-100"
-                      : "translate-x-4 opacity-90"
-                  }`}
-                >
-                  {hoveredService ? (
-                    <div className="rounded-xl p-6 mb-6">
-                      <div className="w-full h-[400px] rounded-lg mb-4 flex items-center justify-center overflow-hidden">
-                        <Image
-                          src={hoveredService.projectSample.image}
-                          alt="service-image"
-                          width={550}
-                          height={400}
-                          className="rounded-lg object-cover"
-                        />
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="bg-emerald-950/30 border border-emerald-900 rounded-2xl p-8 flex items-center justify-center h-[400px]">
-                      <div className="text-center text-emerald-800">
-                        <div className="w-16 h-16 mx-auto mb-4 opacity-40">
-                          <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                          </svg>
-                        </div>
-                        <p className="text-sm text-emerald-300/70">
-                          Hover over a service to see project samples
-                        </p>
-                      </div>
-                    </div>
-                  )}
+              {openServiceId ? (
+                <div className="rounded-xl p-6 mb-6">
+                  <div className="w-full h-[400px] rounded-lg mb-4 flex items-center justify-center overflow-hidden">
+                    <Image
+                      src={
+                        services.find((s) => s.id === openServiceId)
+                          .projectSample.image
+                      }
+                      alt="service-image"
+                      width={550}
+                      height={400}
+                      className="rounded-lg object-cover"
+                    />
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className="bg-emerald-950/30 border border-emerald-900 rounded-2xl p-8 flex items-center justify-center h-[400px]">
+                  <div className="text-center text-emerald-800">
+                    <p className="text-sm text-emerald-300/70">
+                      Click a service to see project samples
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
