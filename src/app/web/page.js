@@ -34,7 +34,7 @@ export default function WebDevelopmentPage() {
       accentColor: "emerald-400",
       icon: null,
       svgPattern: "circuit",
-      image: "/assets/projects/web/wordpress/1.jpg",
+      image: "/assets/projects/web/Wordpress/1.jpg",
       isCenter: false,
     },
     {
@@ -49,7 +49,7 @@ export default function WebDevelopmentPage() {
       accentColor: "emerald-400",
       icon: null,
       svgPattern: "circuit",
-      image: "/assets/projects/web/wordpress/2.jpg",
+      image: "/assets/projects/web/Wordpress/2.jpg",
       isCenter: false,
     },
     {
@@ -64,7 +64,7 @@ export default function WebDevelopmentPage() {
       accentColor: "emerald-400",
       icon: null,
       svgPattern: "circuit",
-      image: "/assets/projects/web/wordpress/3.jpg",
+      image: "/assets/projects/web/Wordpress/3.jpg",
       isCenter: false,
     },
     {
@@ -79,7 +79,7 @@ export default function WebDevelopmentPage() {
       accentColor: "emerald-400",
       icon: null,
       svgPattern: "circuit",
-      image: "/assets/projects/web/wordpress/4.jpg",
+      image: "/assets/projects/web/Wordpress/4.jpg",
       isCenter: false,
     },
     {
@@ -94,7 +94,7 @@ export default function WebDevelopmentPage() {
       accentColor: "emerald-400",
       icon: null,
       svgPattern: "circuit",
-      image: "/assets/projects/web/wordpress/5.jpg",
+      image: "/assets/projects/web/Wordpress/5.jpg",
       isCenter: false,
     },
     {
@@ -109,7 +109,7 @@ export default function WebDevelopmentPage() {
       accentColor: "emerald-400",
       icon: null,
       svgPattern: "circuit",
-      image: "/assets/projects/web/wordpress/6.jpg",
+      image: "/assets/projects/web/Wordpress/6.jpg",
       isCenter: false,
     },
     {
@@ -124,7 +124,7 @@ export default function WebDevelopmentPage() {
       accentColor: "emerald-400",
       icon: null,
       svgPattern: "circuit",
-      image: "/assets/projects/web/wordpress/7.jpg",
+      image: "/assets/projects/web/Wordpress/7.jpg",
       isCenter: false,
     },
     {
@@ -139,7 +139,7 @@ export default function WebDevelopmentPage() {
       accentColor: "emerald-400",
       icon: null,
       svgPattern: "circuit",
-      image: "/assets/projects/web/wordpress/8.jpg",
+      image: "/assets/projects/web/Wordpress/8.jpg",
       isCenter: false,
     },
     {
@@ -154,7 +154,7 @@ export default function WebDevelopmentPage() {
       accentColor: "emerald-400",
       icon: null,
       svgPattern: "circuit",
-      image: "/assets/projects/web/wordpress/9.jpg",
+      image: "/assets/projects/web/Wordpress/9.jpg",
       isCenter: false,
     },
     {
@@ -169,7 +169,7 @@ export default function WebDevelopmentPage() {
       accentColor: "emerald-400",
       icon: null,
       svgPattern: "circuit",
-      image: "/assets/projects/web/wordpress/10.jpg",
+      image: "/assets/projects/web/Wordpress/10.jpg",
       isCenter: false,
     },
     {
@@ -184,7 +184,7 @@ export default function WebDevelopmentPage() {
       accentColor: "emerald-400",
       icon: null,
       svgPattern: "circuit",
-      image: "/assets/projects/web/wordpress/11.jpg",
+      image: "/assets/projects/web/Wordpress/11.jpg",
       isCenter: false,
     },
     {
@@ -199,7 +199,7 @@ export default function WebDevelopmentPage() {
       accentColor: "emerald-400",
       icon: null,
       svgPattern: "circuit",
-      image: "/assets/projects/web/wordpress/12.jpg",
+      image: "/assets/projects/web/Wordpress/12.jpg",
       isCenter: false,
     },
     {
@@ -214,7 +214,7 @@ export default function WebDevelopmentPage() {
       accentColor: "emerald-400",
       icon: null,
       svgPattern: "circuit",
-      image: "/assets/projects/web/wordpress/13.jpg",
+      image: "/assets/projects/web/Wordpress/13.jpg",
       isCenter: false,
     },
     {
@@ -229,7 +229,7 @@ export default function WebDevelopmentPage() {
       accentColor: "emerald-400",
       icon: null,
       svgPattern: "circuit",
-      image: "/assets/projects/web/wordpress/14.jpg",
+      image: "/assets/projects/web/Wordpress/14.jpg",
       isCenter: false,
     },
     {
@@ -244,7 +244,7 @@ export default function WebDevelopmentPage() {
       accentColor: "emerald-400",
       icon: null,
       svgPattern: "circuit",
-      image: "/assets/projects/web/wordpress/15.jpg",
+      image: "/assets/projects/web/Wordpress/15.jpg",
       isCenter: false,
     },
     {
@@ -259,7 +259,7 @@ export default function WebDevelopmentPage() {
       accentColor: "emerald-400",
       icon: null,
       svgPattern: "circuit",
-      image: "/assets/projects/web/wordpress/16.jpg",
+      image: "/assets/projects/web/Wordpress/16.jpg",
       isCenter: false,
     },
     {
@@ -274,7 +274,7 @@ export default function WebDevelopmentPage() {
       accentColor: "emerald-400",
       icon: null,
       svgPattern: "circuit",
-      image: "/assets/projects/web/wordpress/17.jpg",
+      image: "/assets/projects/web/Wordpress/17.jpg",
       isCenter: false,
     },
     {
@@ -289,7 +289,7 @@ export default function WebDevelopmentPage() {
       accentColor: "emerald-400",
       icon: null,
       svgPattern: "circuit",
-      image: "/assets/projects/web/wordpress/18.jpg",
+      image: "/assets/projects/web/Wordpress/18.jpg",
       isCenter: false,
     },
     {
@@ -304,7 +304,7 @@ export default function WebDevelopmentPage() {
       accentColor: "emerald-400",
       icon: null,
       svgPattern: "circuit",
-      image: "/assets/projects/web/custom/1.jpg",
+      image: "/assets/projects/web/Custom/1.jpg",
       isCenter: false,
     },
     {
@@ -319,7 +319,7 @@ export default function WebDevelopmentPage() {
       accentColor: "emerald-400",
       icon: null,
       svgPattern: "circuit",
-      image: "/assets/projects/web/custom/2.jpg",
+      image: "/assets/projects/web/Custom/2.jpg",
       isCenter: false,
     },
     {
@@ -334,7 +334,7 @@ export default function WebDevelopmentPage() {
       accentColor: "emerald-400",
       icon: null,
       svgPattern: "circuit",
-      image: "/assets/projects/web/custom/3.jpg",
+      image: "/assets/projects/web/Custom/3.jpg",
       isCenter: false,
     },
     {
@@ -349,7 +349,7 @@ export default function WebDevelopmentPage() {
       accentColor: "emerald-400",
       icon: null,
       svgPattern: "circuit",
-      image: "/assets/projects/web/custom/4.jpg",
+      image: "/assets/projects/web/Custom/4.jpg",
       isCenter: false,
     },
     {
@@ -364,7 +364,7 @@ export default function WebDevelopmentPage() {
       accentColor: "emerald-400",
       icon: null,
       svgPattern: "circuit",
-      image: "/assets/projects/web/custom/5.jpg",
+      image: "/assets/projects/web/Custom/5.jpg",
       isCenter: false,
     },
     {
@@ -379,7 +379,7 @@ export default function WebDevelopmentPage() {
       accentColor: "emerald-400",
       icon: null,
       svgPattern: "circuit",
-      image: "/assets/projects/web/custom/6.jpg",
+      image: "/assets/projects/web/Custom/6.jpg",
       isCenter: false,
     },
     {
@@ -394,7 +394,7 @@ export default function WebDevelopmentPage() {
       accentColor: "emerald-400",
       icon: null,
       svgPattern: "circuit",
-      image: "/assets/projects/web/custom/7.jpg",
+      image: "/assets/projects/web/Custom/7.jpg",
       isCenter: false,
     },
     {
@@ -409,7 +409,7 @@ export default function WebDevelopmentPage() {
       accentColor: "emerald-400",
       icon: null,
       svgPattern: "circuit",
-      image: "/assets/projects/web/custom/8.jpg",
+      image: "/assets/projects/web/Custom/8.jpg",
       isCenter: false,
     },
     {
@@ -424,7 +424,7 @@ export default function WebDevelopmentPage() {
       accentColor: "emerald-400",
       icon: null,
       svgPattern: "circuit",
-      image: "/assets/projects/web/shopify/1.jpg",
+      image: "/assets/projects/web/Shopify/1.jpg",
       isCenter: false,
     },
     {
@@ -439,7 +439,7 @@ export default function WebDevelopmentPage() {
       accentColor: "emerald-400",
       icon: null,
       svgPattern: "circuit",
-      image: "/assets/projects/web/shopify/2.jpg",
+      image: "/assets/projects/web/Shopify/2.jpg",
       isCenter: false,
     },
   ];
