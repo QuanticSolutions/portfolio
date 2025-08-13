@@ -125,15 +125,15 @@ export const Header = () => {
   ];
 
   return (
-    <div className="max-w-7xl relative mx-auto py-8 sm:py-12 md:py-16 lg:py-20 xl:py-24 px-4 sm:px-6 lg:px-8 w-full left-0 top-20">
+       <div className="max-w-7xl relative mx-auto py-8 sm:py-12 md:py-16 lg:py-20 xl:py-24 px-4 sm:px-6 lg:px-8 w-full left-0 top-20 text-center">
       {/* Main Title */}
-      <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold bg-gradient-to-r from-green-400 via-emerald-400 to-teal-400 bg-clip-text text-transparent animate-pulse py-2 text-center sm:text-left">
+      <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold bg-gradient-to-r from-green-400 via-emerald-400 to-teal-400 bg-clip-text text-transparent animate-pulse py-2">
         QUANTIC SOLUTIONS
       </h1>
 
       {/* Typewriter Effect */}
-      <div className="py-2 sm:py-3 text-center sm:text-left">
-        <TypewriterEffect words={words} />
+      <div className="py-2 sm:py-3 text-center">
+        <TypewriterEffect words={words} className={"text-center"} />
       </div>
 
       {/* Buttons */}
@@ -141,7 +141,7 @@ export const Header = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut", delay: 1 }}
-        className="flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-6 py-4 sm:py-3 md:py-4 items-center sm:items-start justify-center sm:justify-start"
+        className="flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-6 py-4 sm:py-3 md:py-4 items-center justify-center"
       >
         <button className="group relative z-10 w-full max-w-xs sm:max-w-none sm:w-auto px-5 sm:px-6 md:px-8 lg:px-10 py-3 sm:py-4 md:py-5 bg-gradient-to-r from-green-500 to-teal-500 text-white font-bold rounded-full shadow-2xl hover:shadow-green-500/50 transition-all duration-500 hover:scale-105 sm:hover:scale-110 overflow-hidden text-sm sm:text-base"
           onClick={()=>{window.location.href = "/services"}}

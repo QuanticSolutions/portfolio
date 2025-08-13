@@ -7,6 +7,7 @@ import { Clients } from "@/components/home/Clients";
 import Cta from "@/components/home/Cta";
 import FloatingStats from "@/components/home/FloatingStats";
 import Testimonials from "@/components/home/Testimonials";
+import SlidingTextSection from "@/components/about/Mission";
 
 const SHAPES = ["cube", "sphere", "pyramid"];
 

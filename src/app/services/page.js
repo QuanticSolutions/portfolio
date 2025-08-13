@@ -4,12 +4,11 @@ import Image from "next/image";
 
 const SoftwareServices = () => {
   const [hoveredService, setHoveredService] = useState(null);
-   const [openServiceId, setOpenServiceId] = useState(null);
+  const [openServiceId, setOpenServiceId] = useState(null);
 
   const toggleService = (id) => {
     setOpenServiceId(openServiceId === id ? null : id);
   };
-
 
   const services = [
     {
@@ -20,7 +19,7 @@ const SoftwareServices = () => {
         "Creating bold, engaging designs that resonate with your audience and tell your brand’s story.",
       projectSample: {
         title: "Brand Design",
-        image: "/assets/service-images/1.jpg",
+        image: "/assets/projects/gaming/schedules/1.jpg",
         tech: ["Figma", "Illustrator", "Photoshop"],
       },
     },
@@ -135,9 +134,9 @@ const SoftwareServices = () => {
     <div className="min-h-screen bg-gradient-to-b from-black via-teal-900 to-black text-white">
       {/* Hero Section */}
       <section className="relative px-6 py-20 lg:px-12 lg:py-32">
-        <div className="max-w-7xl mx-auto text-left">
+        <div className="max-w-7xl mx-auto text-center">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-emerald-600/20 border border-emerald-500/30 rounded-full px-4 py-2 mb-8">
+          <div className="inline-flex items-center text-center gap-2 bg-emerald-600/20 border border-emerald-500/30 rounded-full px-4 py-2 mb-8">
             <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
             <span className="text-emerald-300 text-sm font-medium">
               75+ PROJECTS LAUNCHED
@@ -145,7 +144,7 @@ const SoftwareServices = () => {
           </div>
 
           {/* Main Heading */}
-          <h1 className="text-5xl lg:text-7xl font-bold leading-tight mb-8">
+          <h1 className="text-5xl lg:text-7xl font-bold leading-tight mb-8 text-center">
             All-in-One Software
             <br />
             <span className="bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">
@@ -154,7 +153,7 @@ const SoftwareServices = () => {
           </h1>
 
           {/* Subtitle */}
-          <p className="text-gray-400 text-lg lg:text-xl max-w-3xl mb-16">
+          <p className="text-gray-400 text-lg lg:text-xl max-w-3xl mb-16 text-center mx-auto">
             From initial roadmaps and UX-driven prototypes to full-stack
             development
             <br />
@@ -171,7 +170,7 @@ const SoftwareServices = () => {
       </section>
 
       {/* Services Section */}
-           <section className="relative px-6 py-20 lg:px-12">
+      <section className="relative px-6 py-20 lg:px-12">
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-16">
             {/* Services List */}
@@ -226,24 +225,25 @@ const SoftwareServices = () => {
             </div>
 
             {/* Project Sample Display */}
-            <div className="sticky top-50 h-fit">
+            <div className="sticky top-20 h-full">
               {openServiceId ? (
-                <div className="rounded-xl p-6 mb-6">
-                  <div className="w-full h-[400px] rounded-lg mb-4 flex items-center justify-center overflow-hidden">
-                    <Image
-                      src={
-                        services.find((s) => s.id === openServiceId)
-                          .projectSample.image
-                      }
-                      alt="service-image"
-                      width={550}
-                      height={400}
-                      className="rounded-lg object-cover"
-                    />
-                  </div>
+                <div className="relative w-full h-full">
+                  <Image
+                    src={
+                      services.find((s) => s.id === openServiceId).projectSample
+                        .image
+                    }
+                    alt="service-image"
+                    fill
+                    className="object-cover rounded-lg"
+                    style={{
+                      right: '1rem',
+                      bottom: '1rem',
+                    }}
+                  />
                 </div>
               ) : (
-                <div className="bg-emerald-950/30 border border-emerald-900 rounded-2xl p-8 flex items-center justify-center h-[400px]">
+                <div className="bg-emerald-950/30 border border-emerald-900 rounded-2xl p-8 flex items-center justify-center min-h-[450px]">
                   <div className="text-center text-emerald-800">
                     <p className="text-sm text-emerald-300/70">
                       Click a service to see project samples

@@ -238,15 +238,24 @@ export const MobileNavToggle = ({
 };
 
 export const NavbarLogo = () => {
+  const [scrolled, setScrolled] = React.useState(false);
+  React.useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 100);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <a
       href="/"
       className="relative z-20 mr-4 flex items-center space-x-2 px-2 py-1 text-sm font-normal text-black">
       <img
-        src="/assets/images/logo.png"
+        src={scrolled ? "/assets/images/logo-white.png" : "/assets/images/logo.png"}
         alt="logo"
-        width={120}
-        height={120} />
+        width={scrolled ? 60 :120}
+        height={scrolled ? 80 :120} />
     </a>
   );
 };
