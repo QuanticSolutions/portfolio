@@ -126,10 +126,10 @@ export default function ProjectsCarousel({
   };
 
   const getSlideWidth = () => {
-  if (visiblePerPage === 1) return "flex-[1_0_100%]";
-  if (visiblePerPage === 2) return "flex-[1_0_50%]";
-  return "flex-[1_0_33.3333%]";
-};
+    if (visiblePerPage === 1) return "w-full";
+    if (visiblePerPage === 2) return "w-1/2";
+    return "w-1/3";
+  };
 
   return (
     <div className="relative">
@@ -159,7 +159,7 @@ export default function ProjectsCarousel({
             opacity: 0;
           }
           100% {
-            transform: translateX(-1px) scale(1);
+            transform: translateX(0px) scale(1);
             opacity: 1;
           }
         }
@@ -169,7 +169,7 @@ export default function ProjectsCarousel({
             opacity: 0;
           }
           100% {
-            transform: translateY(0) scale(1);
+            transform: translateY(0) scale(1.01);
             opacity: 1;
           }
         }
@@ -221,7 +221,7 @@ export default function ProjectsCarousel({
             return (
               <div
                 key={project.id}
-                className={`${getSlideWidth()} h-full relative bg-gradient-to-br ${
+                className={`${getSlideWidth()} h-full flex-shrink-0 relative bg-gradient-to-br ${
                   project.bgGradient ?? "from-teal-900 via-black to-teal-900"
                 }
         flex flex-col justify-between p-3 sm:p-6 lg:p-8 overflow-hidden group cursor-pointer transition-all duration-700 ${animationClass}`}
@@ -374,7 +374,7 @@ export default function ProjectsCarousel({
                     ? "bg-emerald-400/20 text-emerald-200"
                     : "text-gray-300 hover:bg-emerald-400/10"
                 }`}
-              >
+                >
                 {sc}
               </button>
             ))}

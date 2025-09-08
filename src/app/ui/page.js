@@ -193,7 +193,7 @@ export default function WebDevelopmentPage() {
     },
     {
       id: 5,
-      title: "Speaki",
+      title: "Speaki Web",
       subtitle: "",
       category: "UI/UX",
       subcategory: "WordPress",
@@ -659,7 +659,7 @@ export default function WebDevelopmentPage() {
     },
     {
       id: 35,
-      title: "Cyber Security",
+      title: "Darkanon",
       subtitle: "",
       category: "UI/UX",
       subcategory: "Custom",
@@ -768,7 +768,7 @@ export default function WebDevelopmentPage() {
     },
     {
       id: 42,
-      title: "Evena",
+      title: "Evna",
       subtitle: "",
       category: "UI/UX",
       subcategory: "App",
@@ -799,7 +799,7 @@ export default function WebDevelopmentPage() {
     },
     {
       id: 44,
-      title: "Swan",
+      title: "Saba",
       subtitle: "",
       category: "UI/UX",
       subcategory: "App",
@@ -814,7 +814,7 @@ export default function WebDevelopmentPage() {
     },
     {
       id: 45,
-      title: "Saba",
+      title: "Swan",
       subtitle: "",
       category: "UI/UX",
       subcategory: "App",
