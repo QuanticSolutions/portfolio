@@ -159,7 +159,7 @@ export default function ProjectsCarousel({
             opacity: 0;
           }
           100% {
-            transform: translateX(0) scale(1);
+            transform: translateX(-1px) scale(1);
             opacity: 1;
           }
         }

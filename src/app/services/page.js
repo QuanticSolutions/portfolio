@@ -4,7 +4,7 @@ import Image from "next/image";
 
 const SoftwareServices = () => {
   const [hoveredService, setHoveredService] = useState(null);
-  const [openServiceId, setOpenServiceId] = useState(1); // Changed: Set first service as default
+  const [openServiceId, setOpenServiceId] = useState(1);
 
   const toggleService = (id) => {
     setOpenServiceId(openServiceId === id ? null : id);
