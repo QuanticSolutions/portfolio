@@ -151,7 +151,7 @@ export default function GrowthPlatformSection() {
           >
             <div className="bg-black/40 backdrop-blur-xl rounded-2xl p-6 sm:p-8 w-full shadow-2xl border border-teal-500/20">
               <h2 className="text-lg sm:text-xl font-bold text-white mb-2">
-                Let's discuss your project
+                Let&apos;s discuss your project
               </h2>
               <p className="text-slate-300 text-sm mb-6">
                 Fill out the form and our team will contact you within 24 hours.
@@ -165,7 +165,7 @@ export default function GrowthPlatformSection() {
                   className="mb-4 p-3 bg-green-500/20 border border-green-500/50 rounded-lg flex items-center gap-2"
                 >
                   <CheckCircle className="w-4 h-4 text-green-400" />
-                  <span className="text-green-300 text-sm">Message sent successfully! We'll get back to you soon.</span>
+                  <span className="text-green-300 text-sm">Message sent successfully! We&apos;ll get back to you soon.</span>
                 </motion.div>
               )}
 
