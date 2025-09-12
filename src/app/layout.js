@@ -36,7 +36,8 @@ export default function RootLayout({ children }) {
       >
          <ParallaxWrapper>
           <Nav />
-          {children}
+         
+    {children}
           <Footer />
          </ParallaxWrapper>
       </body>

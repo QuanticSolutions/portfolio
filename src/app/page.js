@@ -68,21 +68,22 @@ export const Float3DElements = () => {
 
 const SectionHeader = ({ children, className = "" }) => (
   <div
-    className={`max-w-7xl relative mx-auto py-4 my-4 sm:py-6 md:py-8 md:my-8 lg:py-10 lg:my-10 px-4 sm:px-6 lg:px-8 w-full ${className}`}
+    className={`max-w-7xl relative mx-auto py-2 my-2 sm:py-3 md:py-4 md:my-4 lg:py-5 lg:my-5 px-3 sm:px-4 lg:px-6 w-full ${className}`}
   >
-    <div className="bg-black/40 backdrop-blur-md rounded-xl border border-white/20 p-6 sm:p-8 md:p-10">
+    <div className="bg-black/40 backdrop-blur-md rounded-lg border border-white/20 p-3 sm:p-4 md:p-5">
       <motion.h1
-        initial={{ opacity: 0, y: 30 }} // start slightly hidden
-        whileInView={{ opacity: 1, y: 0 }} // fade + slide in
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        viewport={{ once: true, amount: 0.3 }} // trigger when 30% in view, only once
-        className="text-xl sm:text-2xl md:text-4xl lg:text-6xl xl:text-7xl text-center font-bold uppercase bg-gradient-to-r from-green-400 via-emerald-400 to-teal-400 bg-clip-text text-transparent animate-pulse py-2"
+        viewport={{ once: true, amount: 0.3 }}
+        className="text-lg sm:text-xl md:text-3xl lg:text-5xl xl:text-6xl text-center font-bold uppercase bg-gradient-to-r from-green-400 via-emerald-400 to-teal-400 bg-clip-text text-transparent py-1"
       >
         {children}
       </motion.h1>
     </div>
   </div>
 );
+
 
 export default function Home() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });

@@ -220,12 +220,30 @@ const SoftwareServices = () => {
                       {service.description}
                     </p>
                   </div>
+
+                  {/* Mobile Image - Shows only on mobile when service is open */}
+                  <div
+                    className={`lg:hidden overflow-hidden transition-all duration-300 ${
+                      openServiceId === service.id ? "max-h-64 pb-4" : "max-h-0"
+                    }`}
+                  >
+                    {openServiceId === service.id && (
+                      <div className="relative w-full aspect-[4/3] mx-7">
+                        <Image
+                          src={service.projectSample.image}
+                          alt="service-image"
+                          fill
+                          className="object-cover rounded-lg"
+                        />
+                      </div>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>
 
-            {/* Project Sample Display */}
-            <div className="sticky top-4 h-full mt-5">
+            {/* Project Sample Display - Desktop Only */}
+            <div className="hidden lg:block sticky top-4 h-full mt-5">
               {openServiceId ? (
                 <div className="relative w-full aspect-[4/3] h-full">
                   <Image
