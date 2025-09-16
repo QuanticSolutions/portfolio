@@ -57,7 +57,7 @@ export default function WebDevelopmentPage() {
       accentColor: "emerald-400",
       icon: null,
       svgPattern: "circuit",
-      image: "/assets/projects/app/1.jpg",
+      image: "/assets/projects/app/1.webp",
       isCenter: false,
     },
     {
@@ -72,7 +72,7 @@ export default function WebDevelopmentPage() {
       accentColor: "emerald-400",
       icon: null,
       svgPattern: "circuit",
-      image: "/assets/projects/app/2.jpg",
+      image: "/assets/projects/app/2.webp",
       isCenter: false,
     },
     {
