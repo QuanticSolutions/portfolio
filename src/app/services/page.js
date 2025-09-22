@@ -228,7 +228,7 @@ const SoftwareServices = () => {
                     }`}
                   >
                     {openServiceId === service.id && (
-                      <div className="relative w-full aspect-[4/3] mx-7">
+                      <div className="relative w-full aspect-[4/3]">
                         <Image
                           src={service.projectSample.image}
                           alt="service-image"
