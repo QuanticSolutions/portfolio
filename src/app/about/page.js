@@ -2,7 +2,7 @@ import React from 'react';
 import { HeroScroll } from '@/components/about/AboutHero';
 import SlidingTextSection from '@/components/about/Mission';
 import FAQSection from '@/components/about/FAQs';
-import { Float3DElements } from '../page';
+import { Float3DElements } from '../home';
 import OurStory from '@/components/about/OurStory';
 
 const About = () => {
