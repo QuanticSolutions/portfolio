@@ -7,6 +7,7 @@ import Cta from "@/components/home/Cta";
 import FloatingStats from "@/components/home/FloatingStats";
 import Testimonials from "@/components/home/Testimonials";
 import { Parallax } from "react-scroll-parallax";
+import { Suspense } from "react";
 
 const SHAPES = ["cube", "sphere", "pyramid"];
 
@@ -97,6 +98,7 @@ export default function Home() {
   }, []);
 
   return (
+    <Suspense fallback={<div>Loading...</div>}>
     <section className="relative w-full overflow-hidden bg-gradient-to-br from-black via-teal-900 to-black">
       <Float3DElements />
       <motion.div
@@ -128,6 +130,7 @@ export default function Home() {
         <Cta />
       </section>
     </section>
+    </Suspense>
   );
 }
 
