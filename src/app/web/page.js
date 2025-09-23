@@ -2,8 +2,6 @@
 
 import React from "react";
 import ProjectsCarousel from "@/components/projects/Projects";
-import { useRouter, useSearchParams } from "next/navigation";
-
 
 function mulberry32(seed) {
   return function () {

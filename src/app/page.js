@@ -7,7 +7,6 @@ import Cta from "@/components/home/Cta";
 import FloatingStats from "@/components/home/FloatingStats";
 import Testimonials from "@/components/home/Testimonials";
 import { Parallax } from "react-scroll-parallax";
-import { Suspense } from "react";
 
 const SHAPES = ["cube", "sphere", "pyramid"];
 
