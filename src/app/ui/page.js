@@ -859,7 +859,6 @@ export default function WebDevelopmentPage() {
         subcategories={webSubcategories}
         category="UI/UX"
         visiblePerPage={3}
-        onProjectClick={handleProjectClick}
       />
     </Suspense>
   );

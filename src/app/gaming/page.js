@@ -944,7 +944,6 @@ export default function GamingPage() {
         subcategories={webSubcategories}
         category="Gaming"
         visiblePerPage={3}
-        onProjectClick={handleProjectClick}
         showDetails={false}
       />
     </Suspense>

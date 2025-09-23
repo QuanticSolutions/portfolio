@@ -593,7 +593,6 @@ export default function WebDevelopmentPage() {
         subcategories={webSubcategories}
         category="Web Development"
         visiblePerPage={3}
-        onProjectClick={handleProjectClick}
       />
     </Suspense>
   );
