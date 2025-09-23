@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useMemo, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Globe, ExternalLink } from "lucide-react";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 
 const useResponsiveSlides = () => {
   const [visiblePerPage, setVisiblePerPage] = useState(3);
@@ -39,8 +40,10 @@ export default function ProjectsCarousel({
   );
 
   const visiblePerPage = useResponsiveSlides();
-
-  const [selectedSubcategory, setSelectedSubcategory] = useState(null);
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const [selectedSubcategory, setSelectedSubcategory] = useState(searchParams.get("sc") || null);
   const [filteredProjects, setFilteredProjects] = useState(initialFiltered);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -352,6 +355,7 @@ export default function ProjectsCarousel({
             onClick={(e) => {
               e.stopPropagation();
               setSelectedSubcategory(null);
+              router.push(pathname, { scroll: false });
             }}
             className={`px-2 sm:px-3 py-1 rounded-full text-xs transition-all whitespace-nowrap flex-shrink-0 ${
               selectedSubcategory === null
@@ -367,6 +371,10 @@ export default function ProjectsCarousel({
                 key={sc}
                 onClick={(e) => {
                   e.stopPropagation();
+                  console.log(sc)
+                  if(sc != "") {
+                    router.push(`?sc=${sc}`, { scroll: false });
+                  }
                   setSelectedSubcategory(sc);
                 }}
                 className={`px-2 sm:px-3 py-1 rounded-full text-xs transition-all whitespace-nowrap flex-shrink-0 ${

@@ -2,6 +2,8 @@
 
 import React from "react";
 import ProjectsCarousel from "@/components/projects/Projects";
+import { useRouter, useSearchParams } from "next/navigation";
+
 
 function mulberry32(seed) {
   return function () {
@@ -579,11 +581,14 @@ export default function WebDevelopmentPage() {
 
   const webSubcategories = ["WordPress", "Shopify", "Custom"];
 
+
   projects = interleaveBySubcategory(projects, webSubcategories);
 
   const handleProjectClick = (project) => {
     console.log("Project clicked:", project);
   };
+
+  
 
   return (
     <ProjectsCarousel
