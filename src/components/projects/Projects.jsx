@@ -2,7 +2,6 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Globe, ExternalLink } from "lucide-react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
-import { Suspense } from "react";
 
 const useResponsiveSlides = () => {
   const [visiblePerPage, setVisiblePerPage] = useState(3);
@@ -138,7 +137,6 @@ export default function ProjectsCarousel({
   };
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
       <div className="relative">
         <style jsx>{`
           .slide-left {
@@ -423,6 +421,5 @@ export default function ProjectsCarousel({
           </div>
         </div>
       </div>
-    </Suspense>
   );
 }
