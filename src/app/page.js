@@ -97,7 +97,6 @@ export default function Home() {
   }, []);
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
     <section className="relative w-full overflow-hidden bg-gradient-to-br from-black via-teal-900 to-black">
       <Float3DElements />
       <motion.div
@@ -129,7 +128,6 @@ export default function Home() {
         <Cta />
       </section>
     </section>
-    </Suspense>
   );
 }
 
