@@ -1,7 +1,6 @@
-"use client";
-
 import React from "react";
 import ProjectsCarousel from "@/components/projects/Projects";
+import { Suspense } from "react";
 
 function mulberry32(seed) {
   return function () {
@@ -21,7 +20,6 @@ function shuffleWithSeed(array, seed = 1) {
 }
 
 function interleaveBySubcategory(projects, order) {
-
   const groups = projects.reduce((acc, project) => {
     if (!acc[project.subcategory]) acc[project.subcategory] = [];
     acc[project.subcategory].push(project);
@@ -42,7 +40,6 @@ function interleaveBySubcategory(projects, order) {
 
   return result;
 }
-
 
 export default function GamingPage() {
   let projects = [
@@ -571,7 +568,7 @@ export default function GamingPage() {
       image: "/assets/projects/corporate/logos/20.jpg",
       isCenter: false,
     },
-        {
+    {
       id: 36,
       title: "Antenna Now",
       subtitle: "Short tag",
@@ -586,7 +583,7 @@ export default function GamingPage() {
       image: "/assets/projects/corporate/logos/21.jpg",
       isCenter: false,
     },
-        {
+    {
       id: 37,
       title: "Antenna Now",
       subtitle: "Short tag",
@@ -601,7 +598,7 @@ export default function GamingPage() {
       image: "/assets/projects/corporate/logos/22.jpg",
       isCenter: false,
     },
-        {
+    {
       id: 38,
       title: "Antenna Now",
       subtitle: "Short tag",
@@ -616,7 +613,7 @@ export default function GamingPage() {
       image: "/assets/projects/corporate/logos/23.jpg",
       isCenter: false,
     },
-        {
+    {
       id: 39,
       title: "Antenna Now",
       subtitle: "Short tag",
@@ -631,7 +628,7 @@ export default function GamingPage() {
       image: "/assets/projects/corporate/logos/24.jpg",
       isCenter: false,
     },
-        {
+    {
       id: 40,
       title: "Antenna Now",
       subtitle: "Short tag",
@@ -871,7 +868,7 @@ export default function GamingPage() {
       image: "/assets/projects/corporate/business/5.jpg",
       isCenter: false,
     },
-      {
+    {
       id: 56,
       title: "Antenna Now",
       subtitle: "Short tag",
@@ -886,7 +883,7 @@ export default function GamingPage() {
       image: "/assets/projects/corporate/business/6.jpg",
       isCenter: false,
     },
-      {
+    {
       id: 57,
       title: "Antenna Now",
       subtitle: "Short tag",
@@ -1156,7 +1153,7 @@ export default function GamingPage() {
       image: "/assets/projects/corporate/posts/9.jpg",
       isCenter: false,
     },
-     {
+    {
       id: 75,
       title: "Antenna Now",
       subtitle: "Short tag",
@@ -1171,7 +1168,7 @@ export default function GamingPage() {
       image: "/assets/projects/corporate/posts/10.jpg",
       isCenter: false,
     },
-     {
+    {
       id: 76,
       title: "Antenna Now",
       subtitle: "Short tag",
@@ -1186,7 +1183,7 @@ export default function GamingPage() {
       image: "/assets/projects/corporate/posts/11.jpg",
       isCenter: false,
     },
-     {
+    {
       id: 77,
       title: "Antenna Now",
       subtitle: "Short tag",
@@ -1201,7 +1198,7 @@ export default function GamingPage() {
       image: "/assets/projects/corporate/posts/12.jpg",
       isCenter: false,
     },
-     {
+    {
       id: 78,
       title: "Antenna Now",
       subtitle: "Short tag",
@@ -1216,7 +1213,7 @@ export default function GamingPage() {
       image: "/assets/projects/corporate/posts/13.jpg",
       isCenter: false,
     },
-     {
+    {
       id: 79,
       title: "Antenna Now",
       subtitle: "Short tag",
@@ -1231,7 +1228,7 @@ export default function GamingPage() {
       image: "/assets/projects/corporate/posts/14.jpg",
       isCenter: false,
     },
-        {
+    {
       id: 80,
       title: "Antenna Now",
       subtitle: "Short tag",
@@ -1246,7 +1243,7 @@ export default function GamingPage() {
       image: "/assets/projects/corporate/posts/15.jpg",
       isCenter: false,
     },
-        {
+    {
       id: 81,
       title: "Antenna Now",
       subtitle: "Short tag",
@@ -1261,7 +1258,7 @@ export default function GamingPage() {
       image: "/assets/projects/corporate/posts/16.jpg",
       isCenter: false,
     },
-        {
+    {
       id: 82,
       title: "Antenna Now",
       subtitle: "Short tag",
@@ -1276,7 +1273,7 @@ export default function GamingPage() {
       image: "/assets/projects/corporate/posts/17.jpg",
       isCenter: false,
     },
-        {
+    {
       id: 83,
       title: "Antenna Now",
       subtitle: "Short tag",
@@ -1291,7 +1288,7 @@ export default function GamingPage() {
       image: "/assets/projects/corporate/posts/18.jpg",
       isCenter: false,
     },
-        {
+    {
       id: 84,
       title: "Antenna Now",
       subtitle: "Short tag",
@@ -1306,7 +1303,7 @@ export default function GamingPage() {
       image: "/assets/projects/corporate/posts/19.jpg",
       isCenter: false,
     },
-        {
+    {
       id: 85,
       title: "Antenna Now",
       subtitle: "Short tag",
@@ -1321,7 +1318,7 @@ export default function GamingPage() {
       image: "/assets/projects/corporate/posts/20.jpg",
       isCenter: false,
     },
-        {
+    {
       id: 86,
       title: "Antenna Now",
       subtitle: "Short tag",
@@ -1336,7 +1333,7 @@ export default function GamingPage() {
       image: "/assets/projects/corporate/posts/21.jpg",
       isCenter: false,
     },
-        {
+    {
       id: 87,
       title: "Antenna Now",
       subtitle: "Short tag",
@@ -1351,7 +1348,7 @@ export default function GamingPage() {
       image: "/assets/projects/corporate/posts/22.jpg",
       isCenter: false,
     },
-        {
+    {
       id: 89,
       title: "Antenna Now",
       subtitle: "Short tag",
@@ -1366,7 +1363,7 @@ export default function GamingPage() {
       image: "/assets/projects/corporate/posts/23.jpg",
       isCenter: false,
     },
-        {
+    {
       id: 90,
       title: "Antenna Now",
       subtitle: "Short tag",
@@ -1381,7 +1378,7 @@ export default function GamingPage() {
       image: "/assets/projects/corporate/posts/24.jpg",
       isCenter: false,
     },
-        {
+    {
       id: 91,
       title: "Antenna Now",
       subtitle: "Short tag",
@@ -1396,7 +1393,7 @@ export default function GamingPage() {
       image: "/assets/projects/corporate/posts/25.jpg",
       isCenter: false,
     },
-        {
+    {
       id: 92,
       title: "Antenna Now",
       subtitle: "Short tag",
@@ -1651,7 +1648,7 @@ export default function GamingPage() {
       image: "/assets/projects/corporate/packaging/3.jpg",
       isCenter: false,
     },
-      {
+    {
       id: 109,
       title: "Antenna Now",
       subtitle: "Short tag",
@@ -1876,7 +1873,7 @@ export default function GamingPage() {
       image: "/assets/projects/corporate/standees/1.jpg",
       isCenter: false,
     },
-     {
+    {
       id: 124,
       title: "Antenna Now",
       subtitle: "Short tag",
@@ -1891,7 +1888,7 @@ export default function GamingPage() {
       image: "/assets/projects/corporate/standees/2.jpg",
       isCenter: false,
     },
-     {
+    {
       id: 125,
       title: "Antenna Now",
       subtitle: "Short tag",
@@ -1906,7 +1903,7 @@ export default function GamingPage() {
       image: "/assets/projects/corporate/standees/3.jpg",
       isCenter: false,
     },
-     {
+    {
       id: 126,
       title: "Antenna Now",
       subtitle: "Short tag",
@@ -1920,7 +1917,7 @@ export default function GamingPage() {
       svgPattern: "circuit",
       image: "/assets/projects/corporate/standees/4.jpg",
       isCenter: false,
-    }, 
+    },
     {
       id: 127,
       title: "Antenna Now",
@@ -2220,7 +2217,7 @@ export default function GamingPage() {
     "3D",
     "Standees",
     "Interior Designs",
-    "Stickers"
+    "Stickers",
   ];
 
   projects = interleaveBySubcategory(projects, webSubcategories);
@@ -2230,13 +2227,15 @@ export default function GamingPage() {
   };
 
   return (
-    <ProjectsCarousel
-      projects={projects}
-      subcategories={webSubcategories}
-      category="Corporate"
-      visiblePerPage={3}
-      onProjectClick={handleProjectClick}
-      showDetails={false}
-    />
+    <Suspense>
+      <ProjectsCarousel
+        projects={projects}
+        subcategories={webSubcategories}
+        category="Corporate"
+        visiblePerPage={3}
+        onProjectClick={handleProjectClick}
+        showDetails={false}
+      />
+    </Suspense>
   );
 }

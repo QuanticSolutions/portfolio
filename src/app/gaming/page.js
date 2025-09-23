@@ -1,10 +1,9 @@
 "use client";
-
 import React from "react";
 import ProjectsCarousel from "@/components/projects/Projects";
+import { Suspense } from "react";
 
 export default function GamingPage() {
-
   const projects = [
     {
       id: 1,
@@ -51,7 +50,7 @@ export default function GamingPage() {
       image: "/assets/projects/gaming/2d/5.jpg",
       isCenter: false,
     },
-        {
+    {
       id: 4,
       title: "Antenna Now",
       subtitle: "Short tag",
@@ -81,7 +80,7 @@ export default function GamingPage() {
       image: "/assets/projects/gaming/2d/7.jpg",
       isCenter: false,
     },
-        {
+    {
       id: 6,
       title: "Antenna Now",
       subtitle: "Short tag",
@@ -216,7 +215,7 @@ export default function GamingPage() {
       image: "/assets/projects/gaming/2d/15.jpg",
       isCenter: false,
     },
-        {
+    {
       id: 14,
       title: "Antenna Now",
       subtitle: "Short tag",
@@ -923,21 +922,31 @@ export default function GamingPage() {
     },
   ];
 
-  const webSubcategories = ["Logo", "Banners", "Emotes", "Overlays", "Characters", "Schedules", "Vtuber", "Sub Badges"];
+  const webSubcategories = [
+    "Logo",
+    "Banners",
+    "Emotes",
+    "Overlays",
+    "Characters",
+    "Schedules",
+    "Vtuber",
+    "Sub Badges",
+  ];
 
   const handleProjectClick = (project) => {
     console.log("Project clicked:", project);
   };
 
   return (
-          <ProjectsCarousel
-            projects={projects}
-            subcategories={webSubcategories}
-            category="Gaming"
-            visiblePerPage={3}
-            onProjectClick={handleProjectClick}
-            showDetails={false}
-          />
-
+    <Suspense>
+      <ProjectsCarousel
+        projects={projects}
+        subcategories={webSubcategories}
+        category="Gaming"
+        visiblePerPage={3}
+        onProjectClick={handleProjectClick}
+        showDetails={false}
+      />
+    </Suspense>
   );
 }

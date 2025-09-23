@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import ProjectsCarousel from "@/components/projects/Projects";
-import { X, Monitor } from 'lucide-react';
+import { X, Monitor } from "lucide-react";
+import { Suspense } from "react";
 
 const PDFPopupModal = ({ isOpen, onClose, project }) => {
   if (!isOpen || !project) return null;
@@ -30,13 +31,16 @@ const PDFPopupModal = ({ isOpen, onClose, project }) => {
           </div>
 
           <div className="bg-black p-6 rounded-lg shadow-inner">
-            <div className="bg-white rounded overflow-hidden shadow-lg" style={{ aspectRatio: '16/9' }}>
+            <div
+              className="bg-white rounded overflow-hidden shadow-lg"
+              style={{ aspectRatio: "16/9" }}
+            >
               {project.pdfPath ? (
                 <iframe
                   src={project.pdfPath}
                   className="w-full h-full"
                   title={`${project.title} PDF`}
-                  style={{ minHeight: '500px' }}
+                  style={{ minHeight: "500px" }}
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200">
@@ -46,7 +50,9 @@ const PDFPopupModal = ({ isOpen, onClose, project }) => {
                       alt={project.title}
                       className="max-w-md max-h-80 object-contain mx-auto rounded-lg shadow-lg"
                     />
-                    <p className="mt-4 text-slate-600">No PDF available for this project</p>
+                    <p className="mt-4 text-slate-600">
+                      No PDF available for this project
+                    </p>
                   </div>
                 </div>
               )}
@@ -62,8 +68,12 @@ const PDFPopupModal = ({ isOpen, onClose, project }) => {
         <div className="bg-slate-900 rounded-b-2xl p-6 border-t border-slate-700">
           <div className="flex justify-between items-center">
             <div>
-              <h3 className="text-lg font-semibold text-white mb-1">{project.title}</h3>
-              <p className="text-emerald-400 text-sm mb-2">{project.category} • {project.subcategory}</p>
+              <h3 className="text-lg font-semibold text-white mb-1">
+                {project.title}
+              </h3>
+              <p className="text-emerald-400 text-sm mb-2">
+                {project.category} • {project.subcategory}
+              </p>
               <p className="text-slate-300 text-sm">{project.description}</p>
             </div>
             {project.pdfPath && (
@@ -102,7 +112,6 @@ function shuffleWithSeed(array, seed = 1) {
 }
 
 function interleaveBySubcategory(projects, order) {
-
   const groups = projects.reduce((acc, project) => {
     if (!acc[project.subcategory]) acc[project.subcategory] = [];
     acc[project.subcategory].push(project);
@@ -158,7 +167,7 @@ export default function WebDevelopmentPage() {
       svgPattern: "circuit",
       image: "/assets/projects/uiux/wordpress/2.jpg",
       isCenter: false,
-      pdfPath: "/assets/projects/uiux/2.pdf"
+      pdfPath: "/assets/projects/uiux/2.pdf",
     },
     {
       id: 3,
@@ -189,7 +198,7 @@ export default function WebDevelopmentPage() {
       svgPattern: "circuit",
       image: "/assets/projects/uiux/wordpress/4.jpg",
       isCenter: false,
-      pdfPath: "/assets/projects/uiux/4.pdf"
+      pdfPath: "/assets/projects/uiux/4.pdf",
     },
     {
       id: 5,
@@ -235,7 +244,7 @@ export default function WebDevelopmentPage() {
       svgPattern: "circuit",
       image: "/assets/projects/uiux/wordpress/7.jpg",
       isCenter: false,
-        pdfPath: "/assets/projects/uiux/7.pdf"
+      pdfPath: "/assets/projects/uiux/7.pdf",
     },
     {
       id: 8,
@@ -281,7 +290,7 @@ export default function WebDevelopmentPage() {
       svgPattern: "circuit",
       image: "/assets/projects/uiux/wordpress/10.jpg",
       isCenter: false,
-      pdfPath: "/assets/projects/uiux/10.pdf"
+      pdfPath: "/assets/projects/uiux/10.pdf",
     },
     {
       id: 11,
@@ -297,7 +306,7 @@ export default function WebDevelopmentPage() {
       svgPattern: "circuit",
       image: "/assets/projects/uiux/wordpress/11.jpg",
       isCenter: false,
-      pdfPath: "/assets/projects/uiux/11.pdf"
+      pdfPath: "/assets/projects/uiux/11.pdf",
     },
     {
       id: 12,
@@ -313,7 +322,7 @@ export default function WebDevelopmentPage() {
       svgPattern: "circuit",
       image: "/assets/projects/uiux/wordpress/12.jpg",
       isCenter: false,
-      pdfPath: "/assets/projects/uiux/12.pdf"
+      pdfPath: "/assets/projects/uiux/12.pdf",
     },
     {
       id: 13,
@@ -329,7 +338,7 @@ export default function WebDevelopmentPage() {
       svgPattern: "circuit",
       image: "/assets/projects/uiux/wordpress/13.jpg",
       isCenter: false,
-      pdfPath: "/assets/projects/uiux/13.pdf"
+      pdfPath: "/assets/projects/uiux/13.pdf",
     },
     {
       id: 14,
@@ -345,7 +354,7 @@ export default function WebDevelopmentPage() {
       svgPattern: "circuit",
       image: "/assets/projects/uiux/wordpress/14.jpg",
       isCenter: false,
-        pdfPath: "/assets/projects/uiux/14.pdf"
+      pdfPath: "/assets/projects/uiux/14.pdf",
     },
     {
       id: 15,
@@ -361,7 +370,7 @@ export default function WebDevelopmentPage() {
       svgPattern: "circuit",
       image: "/assets/projects/uiux/wordpress/15.jpg",
       isCenter: false,
-      pdfPath: "/assets/projects/uiux/15.pdf"
+      pdfPath: "/assets/projects/uiux/15.pdf",
     },
     {
       id: 16,
@@ -407,7 +416,7 @@ export default function WebDevelopmentPage() {
       svgPattern: "circuit",
       image: "/assets/projects/uiux/wordpress/18.jpg",
       isCenter: false,
-        pdfPath: "/assets/projects/uiux/18.pdf"
+      pdfPath: "/assets/projects/uiux/18.pdf",
     },
     {
       id: 19,
@@ -423,7 +432,7 @@ export default function WebDevelopmentPage() {
       svgPattern: "circuit",
       image: "/assets/projects/uiux/wordpress/19.jpg",
       isCenter: false,
-      pdfPath: "/assets/projects/uiux/19.pdf"
+      pdfPath: "/assets/projects/uiux/19.pdf",
     },
     {
       id: 20,
@@ -439,7 +448,7 @@ export default function WebDevelopmentPage() {
       svgPattern: "circuit",
       image: "/assets/projects/uiux/wordpress/20.jpg",
       isCenter: false,
-        pdfPath: "/assets/projects/uiux/20.pdf"
+      pdfPath: "/assets/projects/uiux/20.pdf",
     },
     {
       id: 21,
@@ -455,7 +464,7 @@ export default function WebDevelopmentPage() {
       svgPattern: "circuit",
       image: "/assets/projects/uiux/wordpress/21.jpg",
       isCenter: false,
-      pdfPath: "/assets/projects/uiux/21.pdf"
+      pdfPath: "/assets/projects/uiux/21.pdf",
     },
     {
       id: 22,
@@ -471,7 +480,7 @@ export default function WebDevelopmentPage() {
       svgPattern: "circuit",
       image: "/assets/projects/uiux/wordpress/22.jpg",
       isCenter: false,
-      pdfPath: "/assets/projects/uiux/22.pdf"
+      pdfPath: "/assets/projects/uiux/22.pdf",
     },
     {
       id: 23,
@@ -502,7 +511,7 @@ export default function WebDevelopmentPage() {
       svgPattern: "circuit",
       image: "/assets/projects/uiux/shopify/1.jpg",
       isCenter: false,
-      pdfPath: "/assets/projects/uiux/24.pdf"
+      pdfPath: "/assets/projects/uiux/24.pdf",
     },
     {
       id: 25,
@@ -548,7 +557,7 @@ export default function WebDevelopmentPage() {
       svgPattern: "circuit",
       image: "/assets/projects/uiux/shopify/4.jpg",
       isCenter: false,
-      pdfPath: "/assets/projects/uiux/27.pdf"
+      pdfPath: "/assets/projects/uiux/27.pdf",
     },
     {
       id: 28,
@@ -624,7 +633,7 @@ export default function WebDevelopmentPage() {
       svgPattern: "circuit",
       image: "/assets/projects/uiux/custom/3.jpg",
       isCenter: false,
-      pdfPath: "/assets/projects/uiux/32.pdf"
+      pdfPath: "/assets/projects/uiux/32.pdf",
     },
     {
       id: 33,
@@ -640,7 +649,7 @@ export default function WebDevelopmentPage() {
       svgPattern: "circuit",
       image: "/assets/projects/uiux/custom/4.jpg",
       isCenter: false,
-      pdfPath: "/assets/projects/uiux/33.pdf"
+      pdfPath: "/assets/projects/uiux/33.pdf",
     },
     {
       id: 34,
@@ -701,10 +710,10 @@ export default function WebDevelopmentPage() {
       svgPattern: "circuit",
       image: "/assets/projects/uiux/custom/8.jpg",
       isCenter: false,
-      pdfPath: "/assets/projects/uiux/37.pdf"
+      pdfPath: "/assets/projects/uiux/37.pdf",
     },
     {
-      id:38,
+      id: 38,
       title: "Smart Tender",
       subtitle: "",
       category: "UI/UX",
@@ -717,7 +726,7 @@ export default function WebDevelopmentPage() {
       svgPattern: "circuit",
       image: "/assets/projects/uiux/custom/9.jpg",
       isCenter: false,
-      pdfPath: "/assets/projects/uiux/38.pdf"
+      pdfPath: "/assets/projects/uiux/38.pdf",
     },
     {
       id: 39,
@@ -748,7 +757,7 @@ export default function WebDevelopmentPage() {
       svgPattern: "circuit",
       image: "/assets/projects/uiux/app/1.jpg",
       isCenter: false,
-      pdfPath: "/assets/projects/uiux/40.pdf"
+      pdfPath: "/assets/projects/uiux/40.pdf",
     },
     {
       id: 41,
@@ -764,7 +773,7 @@ export default function WebDevelopmentPage() {
       svgPattern: "circuit",
       image: "/assets/projects/uiux/app/2.jpg",
       isCenter: false,
-      pdfPath: "/assets/projects/uiux/41.pdf"
+      pdfPath: "/assets/projects/uiux/41.pdf",
     },
     {
       id: 42,
@@ -795,7 +804,7 @@ export default function WebDevelopmentPage() {
       svgPattern: "circuit",
       image: "/assets/projects/uiux/app/4.jpg",
       isCenter: false,
-      pdfPath: "/assets/projects/uiux/43.pdf"
+      pdfPath: "/assets/projects/uiux/43.pdf",
     },
     {
       id: 44,
@@ -828,7 +837,7 @@ export default function WebDevelopmentPage() {
       isCenter: false,
     },
   ];
-  
+
   const webSubcategories = ["WordPress", "Shopify", "Custom", "App"];
 
   projects = interleaveBySubcategory(projects, webSubcategories);
@@ -844,7 +853,7 @@ export default function WebDevelopmentPage() {
   };
 
   return (
-    <>
+    <Suspense>
       <ProjectsCarousel
         projects={projects}
         subcategories={webSubcategories}
@@ -852,6 +861,6 @@ export default function WebDevelopmentPage() {
         visiblePerPage={3}
         onProjectClick={handleProjectClick}
       />
-    </>
+    </Suspense>
   );
 }

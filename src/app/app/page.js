@@ -1,7 +1,6 @@
-"use client";
-
 import React from "react";
 import ProjectsCarousel from "@/components/projects/Projects";
+import { Suspense } from "react";
 
 function mulberry32(seed) {
   return function () {
@@ -21,7 +20,6 @@ function shuffleWithSeed(array, seed = 1) {
 }
 
 function interleaveBySubcategory(projects, order) {
-
   const groups = projects.reduce((acc, project) => {
     if (!acc[project.subcategory]) acc[project.subcategory] = [];
     acc[project.subcategory].push(project);
@@ -146,12 +144,14 @@ export default function WebDevelopmentPage() {
   };
 
   return (
-    <ProjectsCarousel
-      projects={projects}
-      subcategories={webSubcategories}
-      category="App Development"
-      visiblePerPage={3}
-      onProjectClick={handleProjectClick}
-    />
+    <Suspense>
+      <ProjectsCarousel
+        projects={projects}
+        subcategories={webSubcategories}
+        category="App Development"
+        visiblePerPage={3}
+        onProjectClick={handleProjectClick}
+      />
+    </Suspense>
   );
 }

@@ -1,8 +1,7 @@
 import Home from "./home";
-import { connection } from 'next/server'
+import { Suspense } from 'react'
 
 export default async function page() {
-  await connection();
   return (
     <Home />
   );

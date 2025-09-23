@@ -2,6 +2,7 @@
 
 import React from "react";
 import ProjectsCarousel from "@/components/projects/Projects";
+import { Suspense } from "react";
 
 function mulberry32(seed) {
   return function () {
@@ -579,22 +580,21 @@ export default function WebDevelopmentPage() {
 
   const webSubcategories = ["WordPress", "Shopify", "Custom"];
 
-
   projects = interleaveBySubcategory(projects, webSubcategories);
 
   const handleProjectClick = (project) => {
     console.log("Project clicked:", project);
   };
 
-  
-
   return (
-    <ProjectsCarousel
-      projects={projects}
-      subcategories={webSubcategories}
-      category="Web Development"
-      visiblePerPage={3}
-      onProjectClick={handleProjectClick}
-    />
+    <Suspense>
+      <ProjectsCarousel
+        projects={projects}
+        subcategories={webSubcategories}
+        category="Web Development"
+        visiblePerPage={3}
+        onProjectClick={handleProjectClick}
+      />
+    </Suspense>
   );
 }
