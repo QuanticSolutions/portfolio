@@ -132,18 +132,14 @@ const SoftwareServices = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-teal-900 to-black text-white">
-      {/* Hero Section */}
       <section className="relative px-4 pt-30 pb-12 lg:px-8 lg:pt-28 lg:pb-16">
         <div className="max-w-7xl mx-auto text-center">
-          {/* Badge */}
           <div className="inline-flex items-center text-center gap-2 bg-emerald-600/20 border border-emerald-500/30 rounded-full px-3 py-1.5 mb-6">
             <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
             <span className="text-emerald-300 text-sm font-medium">
               75+ PROJECTS LAUNCHED
             </span>
           </div>
-
-          {/* Main Heading */}
           <h1 className="text-4xl lg:text-6xl font-bold leading-tight mb-6 text-center">
             All-in-One Software
             <br />
@@ -151,8 +147,6 @@ const SoftwareServices = () => {
               Services
             </span>
           </h1>
-
-          {/* Subtitle */}
           <p className="text-gray-400 text-base lg:text-lg max-w-3xl mb-12 text-center mx-auto">
             From initial roadmaps and UX-driven prototypes to full-stack
             development
@@ -161,26 +155,20 @@ const SoftwareServices = () => {
             business.
           </p>
         </div>
-
-        {/* Background Pattern */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-emerald-600/5 rounded-full blur-3xl"></div>
           <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-teal-600/5 rounded-full blur-3xl"></div>
         </div>
       </section>
-
-      {/* Services Section */}
       <section className="relative px-4 py-12 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-6 lg:gap-12">
-            {/* Services List */}
             <div className="space-y-1">
               {services.map((service) => (
                 <div
                   key={service.id}
                   className="border-b border-emerald-900 hover:border-emerald-600 transition-all duration-300"
                 >
-                  {/* Heading Row */}
                   <div
                     className="py-4 flex items-center justify-between cursor-pointer"
                     onClick={() => toggleService(service.id)}
@@ -199,8 +187,6 @@ const SoftwareServices = () => {
                         {service.title}
                       </h3>
                     </div>
-
-                    {/* Arrow Icon */}
                     <span
                       className={`transform transition-transform duration-300 ${
                         openServiceId === service.id ? "rotate-180" : "rotate-0"
@@ -209,8 +195,6 @@ const SoftwareServices = () => {
                       ▼
                     </span>
                   </div>
-
-                  {/* Description */}
                   <div
                     className={`overflow-hidden transition-all duration-300 ${
                       openServiceId === service.id ? "max-h-32" : "max-h-0"
@@ -220,15 +204,13 @@ const SoftwareServices = () => {
                       {service.description}
                     </p>
                   </div>
-
-                  {/* Mobile Image - Shows only on mobile when service is open */}
                   <div
                     className={`lg:hidden overflow-hidden transition-all duration-300 ${
                       openServiceId === service.id ? "max-h-64 pb-4" : "max-h-0"
                     }`}
                   >
                     {openServiceId === service.id && (
-                      <div className="relative w-full aspect-[4/3]">
+                      <div className="relative w-full aspect-[4/2]">
                         <Image
                           src={service.projectSample.image}
                           alt="service-image"
@@ -241,8 +223,6 @@ const SoftwareServices = () => {
                 </div>
               ))}
             </div>
-
-            {/* Project Sample Display - Desktop Only */}
             <div className="hidden lg:block sticky top-4 h-full mt-5">
               {openServiceId ? (
                 <div className="relative w-full aspect-[4/3] h-full">

@@ -17,7 +17,7 @@ export function Clients() {
   return (
     <div className="w-full">
       {/* Desktop view - grid rows */}
-      <div className="hidden lg:flex flex-row flex-wrap items-center justify-center gap-6">
+      <div className="hidden md:flex flex-row flex-wrap items-center justify-center gap-6">
         {logoRows.map((row, i) => (
           <ClientLogos key={i} logos={row} />
         ))}

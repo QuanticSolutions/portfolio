@@ -4,7 +4,6 @@ import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { twMerge } from "tailwind-merge";
 import { TypewriterEffect } from "./TypeWriter";
 import { InfiniteMovingCardsDemo } from "@/components/home/HeroSlider";
-import { Boxes } from "./BackgroundWithBoxes";
 
 export const HeroParallax = ({ products }) => {
   const firstRow = products.slice(0, 5);
@@ -15,8 +14,6 @@ export const HeroParallax = ({ products }) => {
     target: ref,
     offset: ["start start", "end start"],
   });
-
-  const springConfig = { stiffness: 300, damping: 30, bounce: 100 };
 
   return (
     <div
@@ -29,57 +26,13 @@ export const HeroParallax = ({ products }) => {
           backgroundImage: "url('/assets/images/hero-bg.jpg')",
           backgroundSize: "cover",
           backgroundPosition: "center",
-          y: useTransform(scrollYProgress, [0, 1], [0, -200]), // adjust -200 for depth
+          y: useTransform(scrollYProgress, [0, 1], [0, -200]),
         }}
       />
       <Header />
       <div className="w-full flex items-center justify-center max-w-7xl relative mx-auto py-6 sm:py-8 md:py-10 lg:py-12 px-4 sm:px-6 lg:px-8">
         <InfiniteMovingCardsDemo />
       </div>
-
-      {/* Hide projects on mobile (< 640px), show on sm and above */}
-      {/* <motion.div
-        style={{
-          rotateX,
-          rotateZ,
-          translateY,
-          opacity,
-        }}
-        className="hidden sm:block"
-      >
-        <div className="max-w-7xl relative mx-auto py-4 sm:py-6 md:py-8 lg:py-10 px-4 sm:px-6 lg:px-8 w-full left-0 top-0">
-          <h1 className="text-lg sm:text-xl md:text-2xl lg:text-4xl xl:text-5xl text-center font-bold uppercase bg-gradient-to-r from-green-400 via-emerald-400 to-teal-400 bg-clip-text text-transparent animate-pulse py-2">
-            Projects That Made an Impact
-          </h1>
-        </div>
-        <motion.div className="flex flex-row-reverse space-x-reverse space-x-4 sm:space-x-6 md:space-x-8 lg:space-x-12 xl:space-x-20 mb-8 sm:mb-12 md:mb-16 lg:mb-20 px-4 sm:px-6 lg:px-8">
-          {firstRow.map((product) => (
-            <ProductCard
-              product={product}
-              translate={translateX}
-              key={product.title}
-            />
-          ))}
-        </motion.div>
-        <motion.div className="flex flex-row mb-8 sm:mb-12 md:mb-16 lg:mb-20 space-x-4 sm:space-x-6 md:space-x-8 lg:space-x-12 xl:space-x-20 px-4 sm:px-6 lg:px-8">
-          {secondRow.map((product) => (
-            <ProductCard
-              product={product}
-              translate={translateXReverse}
-              key={product.title}
-            />
-          ))}
-        </motion.div>
-        <motion.div className="flex flex-row-reverse space-x-reverse space-x-4 sm:space-x-6 md:space-x-8 lg:space-x-12 xl:space-x-20 px-4 sm:px-6 lg:px-8">
-          {thirdRow.map((product) => (
-            <ProductCard
-              product={product}
-              translate={translateX}
-              key={product.title}
-            />
-          ))}
-        </motion.div>
-      </motion.div> */}
     </div>
   );
 };
@@ -112,20 +65,15 @@ export const Header = () => {
   ];
 
   return (
-    <div className="max-w-7xl relative mx-auto pt-16 pb-8 sm:pt-20 sm:pb-12 md:pt-24 md:pb-16 lg:pt-28 lg:pb-20 xl:pt-32 xl:pb-24 px-4 sm:px-6 lg:px-8 w-full left-0 text-center">
-      {/* Main Title */}
+    <div  className="max-w-7xl relative mx-auto pt-24 pb-10 sm:pt-20 sm:pb-12 md:pt-24 md:pb-16 lg:pt-28 lg:pb-20 xl:pt-32 xl:pb-24 px-4 sm:px-6 lg:px-8 w-full left-0 text-center">
       <div className="mb-6 sm:mb-8 md:mb-10 lg:mb-12">
         <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold bg-gradient-to-r from-green-400 via-emerald-400 to-teal-400 bg-clip-text text-transparent animate-pulse leading-tight">
           QUANTIC SOLUTIONS
         </h1>
       </div>
-
-      {/* Typewriter Effect */}
       <div className="mb-8 sm:mb-10 md:mb-12 lg:mb-14 text-center">
         <TypewriterEffect words={words} className={"text-center"} />
       </div>
-
-      {/* Buttons */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

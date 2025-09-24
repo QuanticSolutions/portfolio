@@ -9,7 +9,7 @@ export const InfiniteMovingLogos = ({
   speed = "fast",
   pauseOnHover = true,
   className = "",
-  imgClassName = "h-16 sm:h-20 md:h-24 w-auto", // bigger logos for mobile
+  imgClassName = "h-21 sm:h-24 md:h-28 w-auto"
 }) => {
   const containerRef = useRef(null);
   const scrollerRef = useRef(null);
@@ -58,7 +58,7 @@ export const InfiniteMovingLogos = ({
       <ul
         ref={scrollerRef}
         className={twMerge(
-          "flex w-max min-w-full shrink-0 flex-nowrap gap-8 py-6", // larger gap for bigger logos
+          "flex w-max min-w-full shrink-0 flex-nowrap gap-8 py-6",
           start && "animate-scroll",
           pauseOnHover && "hover:[animation-play-state:paused]"
         )}
