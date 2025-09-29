@@ -119,7 +119,7 @@ export function Nav() {
                           <a
                             key={sub.name}
                             href={sub.link}
-                            className="block px-4 py-2 text-sm text-neutral-600 dark:text-neutral-200 hover:bg-green-400/10"
+                            className="block px-4 py-4 text-sm text-neutral-600 dark:text-neutral-200 hover:bg-green-400/10"
                           >
                             {sub.name}
                           </a>
@@ -130,15 +130,6 @@ export function Nav() {
                 );
               }
             })}
-            <div className="flex w-full flex-col gap-4">
-              <NavbarButton
-                onClick={() => setIsMobileMenuOpen(false)}
-                variant="primary"
-                className="w-full"
-              >
-                Book a call
-              </NavbarButton>
-            </div>
           </MobileNavMenu>
         </MobileNav>
       </Navbar>
