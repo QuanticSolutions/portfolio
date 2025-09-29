@@ -113,13 +113,13 @@ export function Nav() {
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
-                        className="absolute left-0 mt-2 bg-white dark:bg-neutral-800 shadow-lg rounded-md py-2 w-40 z-50"
+                        className="absolute left-0 mt-2 bg-gradient-to-br from-teal-900 via-black to-emerald-500 backdrop-blur-xl shadow-md shadow-emerald-400 rounded-md py-2 w-40 z-50"
                       >
                         {item.children.map((sub) => (
                           <a
                             key={sub.name}
                             href={sub.link}
-                            className="block px-4 py-4 text-sm text-neutral-600 dark:text-neutral-200 hover:bg-green-400/10"
+                            className="block px-4 py-4 text-sm text-white dark:text-neutral-200 hover:bg-green-400/10"
                           >
                             {sub.name}
                           </a>
