@@ -11,7 +11,7 @@ const useResponsiveSlides = () => {
       const width = window.innerWidth;
       if (width < 640) {
         setVisiblePerPage(1);
-      } else if (width >= 640 && width < 1024) {
+      } else if (width >= 640 && width <= 1024) {
         setVisiblePerPage(2);
       } else {
         setVisiblePerPage(3);

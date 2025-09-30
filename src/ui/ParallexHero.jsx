@@ -18,7 +18,7 @@ export const HeroParallax = ({ products }) => {
   return (
     <div
       ref={ref}
-      className="min-h-screen sm:h-[110vh] lg:h-[130vh] py-4 sm:py-8 lg:py-12 xl:py-20 overflow-hidden antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
+      className="py-4 sm:py-8 lg:py-12 xl:py-20 overflow-hidden antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
     >
       <motion.div
         className="absolute inset-0 -z-10"
