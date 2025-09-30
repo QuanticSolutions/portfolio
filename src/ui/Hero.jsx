@@ -47,7 +47,7 @@ export default function GlowingHero() {
   return (
     <header
       ref={rootRef}
-      className="relative isolate overflow-hidden bg-black min-h-[56vh] sm:min-h-[65vh] md:min-h-[75vh] lg:min-h-screen xl:min-h-screenflex items-end sm:items-center md:items-center px-4 sm:px-6 lg:px-8 py-20 sm:py-20 md:py-20 lg:py-28"
+      className="relative isolate overflow-hidden bg-black xl:min-h-screenflex items-end sm:items-center md:items-center px-4 sm:px-6 lg:px-8 py-20 sm:py-20 md:py-20 lg:py-28"
       style={{
         // subtle 3D transform based on tilt
         transform: `perspective(1200px) rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg)`,
