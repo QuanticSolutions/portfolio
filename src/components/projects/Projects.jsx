@@ -242,7 +242,7 @@ export default function ProjectsGrid({
 
   return (
     <div className="relative min-h-screen w-full bg-gradient-to-br from-black via-teal-900/25 to-black
-      py-14 px-6 sm:px-10 md:px-16 lg:px-24 xl:px-32">
+      pt-28 pb-14 px-6 sm:px-10 md:px-16 lg:px-24 xl:px-32">
       <div className="max-w-6xl mx-auto">
 
         {/* ── Section header ── */}
