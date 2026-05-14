@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
-import { HeroParallax } from "@/ui/ParallexHero";
+import { HeroSection } from "@/ui/ParallexHero";
 import { Clients } from "@/components/home/Clients";
 import Cta from "@/components/home/Cta";
 import FloatingStats from "@/components/home/FloatingStats";
@@ -106,7 +106,7 @@ export default function Home() {
           y: mousePosition.y - 128,
         }}
       />
-      <HeroParallax products={products} />
+      <HeroSection products={products} />
 
       <section className="py-8 sm:py-10 md:py-12 lg:py-14 xl:py-16">
         <SectionHeader>Built with Our Clients, for Their Success</SectionHeader>
