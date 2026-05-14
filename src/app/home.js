@@ -1,183 +1,363 @@
 "use client";
-import React, { useState, useEffect, useMemo } from "react";
-import { motion } from "framer-motion";
-import { HeroParallax } from "@/ui/ParallexHero";
-import { Clients } from "@/components/home/Clients";
-import Cta from "@/components/home/Cta";
-import FloatingStats from "@/components/home/FloatingStats";
-import Testimonials from "@/components/home/Testimonials";
+import React, { useState, useMemo, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ExternalLink, ArrowUpRight } from "lucide-react";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 
-const SHAPES = ["cube", "sphere", "pyramid"];
+/* ─────────────────────────────────────────────
+   Types  (keep identical to your existing data shape)
+───────────────────────────────────────────── */
+interface Project {
+  id: string | number;
+  title: string;
+  subtitle?: string;
+  category?: string;
+  subcategory?: string;
+  image?: string;
+  link?: string;
+  bgGradient?: string;
+  accentColor?: string;
+  textColor?: string;
+  /** "wide" | "tall" | "medium" | "small" | "mini"
+   *  If you don't supply size, the grid auto-assigns by index */
+  size?: "wide" | "tall" | "medium" | "small" | "mini";
+}
 
-const COLORS = [
-  "from-green-400 to-teal-400",
-  "from-teal-400 to-emerald-400",
-  "from-emerald-400 to-green-400",
-  "from-lime-400 to-emerald-500",
-  "from-cyan-400 to-green-400",
-];
+/* ─────────────────────────────────────────────
+   SVG background patterns (deterministic by id)
+───────────────────────────────────────────── */
+function ProjectSVGPattern({ id }: { id: string | number }) {
+  const numId = typeof id === "number" ? id : parseInt(id as string) || 0;
 
-const generateElements = (count = 10) => {
-  return Array.from({ length: count }, (_, i) => ({
-    id: i,
-    shape: SHAPES[Math.floor(Math.random() * SHAPES.length)],
-    color: COLORS[Math.floor(Math.random() * COLORS.length)],
-    delay: Math.random() * 5,
-    left: Math.random() * 100,
-    top: Math.random() * 100,
-  }));
-};
+  if (numId % 4 === 0)
+    return (
+      <svg className="w-full h-full text-emerald-400" viewBox="0 0 100 100">
+        <defs>
+          <pattern id={`grid-${id}`} width="10" height="10" patternUnits="userSpaceOnUse">
+            <path d="M 10 0 L 0 0 0 10" fill="none" stroke="currentColor" strokeWidth="0.4" />
+          </pattern>
+        </defs>
+        <rect width="100" height="100" fill={`url(#grid-${id})`} />
+        {[...Array(4)].map((_, i) => (
+          <circle key={i} cx={50} cy={50} r={12 + i * 16} fill="none" stroke="currentColor" strokeWidth="0.25" opacity={0.5 - i * 0.1} />
+        ))}
+      </svg>
+    );
 
-export const Float3DElements = () => {
-  const elements = useMemo(() => generateElements(8), []);
+  if (numId % 3 === 0)
+    return (
+      <svg className="w-full h-full text-teal-400" viewBox="0 0 100 100">
+        {[...Array(8)].map((_, i) => (
+          <line key={i} x1="0" y1={i * 14} x2="100" y2={i * 14 + (i % 2 === 0 ? 18 : -18)} stroke="currentColor" strokeWidth="0.25" />
+        ))}
+        <rect x="20" y="20" width="60" height="60" fill="none" stroke="currentColor" strokeWidth="0.15" strokeDasharray="2,2" />
+      </svg>
+    );
+
+  if (numId % 2 === 0)
+    return (
+      <svg className="w-full h-full text-green-400" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" strokeWidth="0.15" />
+        <path d="M 10 50 Q 50 10 90 50" fill="none" stroke="currentColor" strokeWidth="0.25" />
+        <path d="M 10 50 Q 50 90 90 50" fill="none" stroke="currentColor" strokeWidth="0.25" />
+        <rect x="47" y="5" width="6" height="90" fill="currentColor" opacity="0.06" />
+      </svg>
+    );
 
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-      {elements.map((element) => (
-        <motion.div
-          key={element.id}
-          className={`absolute w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br ${element.color} opacity-10 sm:opacity-20 blur-sm`}
-          style={{
-            left: `${element.left}%`,
-            top: `${element.top}%`,
-            borderRadius:
-              element.shape === "sphere"
-                ? "50%"
-                : element.shape === "pyramid"
-                ? "0 0 50% 50%"
-                : "10px",
-          }}
-          animate={{
-            y: [0, -100, 0],
-            x: [0, 50, 0],
-            rotate: [0, 180, 360],
-            scale: [1, 1.2, 1],
-          }}
-          transition={{
-            duration: 12 + Math.random() * 8,
-            repeat: Infinity,
-            delay: element.delay,
-            ease: "easeInOut",
-          }}
-        />
-      ))}
-    </div>
-  );
-};
-
-const SectionHeader = ({ children, className = "" }) => (
-  <div
-    className={`max-w-7xl relative mx-auto py-2 my-2 sm:py-3 md:py-4 md:my-4 lg:py-5 lg:my-5 px-3 sm:px-4 lg:px-6 w-full ${className}`}
-  >
-    <div className="bg-black/40 backdrop-blur-md rounded-lg border border-white/20 p-3 sm:p-4 md:p-5">
-      <motion.h1
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        viewport={{ once: true, amount: 0.3 }}
-        className="text-lg sm:text-xl md:text-3xl lg:text-5xl xl:text-6xl text-center font-bold uppercase bg-gradient-to-r from-green-400 via-emerald-400 to-teal-400 bg-clip-text text-transparent py-1"
-      >
-        {children}
-      </motion.h1>
-    </div>
-  </div>
-);
-
-
-export default function Home() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
-  return (
-    <section className="relative w-full overflow-hidden bg-gradient-to-br from-black via-teal-900 to-black">
-      <Float3DElements />
-      <motion.div
-        className="fixed top-0 left-0 w-64 h-64 sm:w-80 sm:h-80 lg:w-96 lg:h-96 pointer-events-none z-10"
-        style={{
-          background:
-            "radial-gradient(circle, rgba(16,185,129,0.15) 0%, transparent 70%)",
-          x: mousePosition.x - 128,
-          y: mousePosition.y - 128,
-        }}
-      />
-      <HeroParallax products={products} />
-
-      <section className="py-8 sm:py-10 md:py-12 lg:py-14 xl:py-16">
-        <SectionHeader>Built with Our Clients, for Their Success</SectionHeader>
-        <Clients />
-      </section>
-
-      <section className="py-8 sm:py-10 md:py-12 lg:py-14 xl:py-16 pb-12 sm:pb-14 md:pb-16 lg:pb-18">
-        <Testimonials />
-      </section>
-
-      <section className="py-8 sm:py-10 md:py-12 lg:py-14 xl:py-16">
-        <SectionHeader>By The Numbers</SectionHeader>
-        <FloatingStats />
-      </section>
-
-      <section className="pt-8 sm:pt-10 md:pt-12 lg:pt-14 xl:pt-16">
-        <Cta />
-      </section>
-    </section>
+    <svg className="w-full h-full text-cyan-400" viewBox="0 0 100 100">
+      <defs>
+        <clipPath id={`clip-${id}`}>
+          <rect x="10" y="10" width="80" height="80" rx="8" />
+        </clipPath>
+      </defs>
+      <rect x="10" y="10" width="80" height="80" rx="8" fill="none" stroke="currentColor" strokeWidth="0.3" strokeDasharray="1,1" />
+      <g clipPath={`url(#clip-${id})`}>
+        <circle cx="20" cy="20" r="28" fill="currentColor" opacity="0.08" />
+        <circle cx="80" cy="80" r="28" fill="currentColor" opacity="0.08" />
+      </g>
+    </svg>
   );
 }
 
-export const products = [
-  {
-    title: "Smart Tender",
-    link: "https://gomoonbeam.com",
-    thumbnail: "/assets/custom/smarttender.jpg",
-  },
-  {
-    title: "Booking Management",
-    link: "https://cursor.so",
-    thumbnail: "/assets/custom/Bookingmanagment.jpg",
-  },
-  {
-    title: "Admin Panel Cars Finder Pro",
-    link: "https://editorially.org",
-    thumbnail: "/assets/custom/carsfinderproadmin.jpg",
-  },
-  {
-    title: "TSB",
-    link: "https://app.pixelperfect.quest",
-    thumbnail: "/assets/wordpress/TSB.jpg",
-  },
-  {
-    title: "Oware 360",
-    link: "https://editorially.org",
-    thumbnail: "/assets/custom/Oware360.jpg",
-  },
-  {
-    title: "Duct Cleaning",
-    link: "https://editorially.org",
-    thumbnail: "/assets/custom/ductcleaning.jpg",
-  },
-  {
-    title: "Custom Taxi Admin Panel",
-    link: "https://editorially.org",
-    thumbnail: "/assets/custom/customtaxiadminpanel.jpg",
-  },
-  {
-    title: "Cars Finder Pro",
-    link: "https://carsfinderpro.com",
-    thumbnail: "/assets/custom/carsfinderpro.jpg",
-  },
-  {
-    title: "Glitch X",
-    link: "https://editorially.org",
-    thumbnail: "/assets/wordpress/glicthx.jpg",
-  },
-  {
-    title: "Owl Watch Services",
-    link: "https://owlwatchservices.quanticsols.com/",
-    thumbnail: "/assets/wordpress/Owl.jpg",
-  },
+/* ─────────────────────────────────────────────
+   Size → Tailwind grid-span classes
+   Mirrors the bento sizing from Doc 2
+───────────────────────────────────────────── */
+const SIZE_CLASSES: Record<string, string> = {
+  wide:   "col-span-12 md:col-span-7 row-span-2",
+  tall:   "col-span-12 md:col-span-5 row-span-2",
+  medium: "col-span-12 md:col-span-7 lg:col-span-5 row-span-1",
+  small:  "col-span-6 md:col-span-4 row-span-1",
+  mini:   "col-span-6 md:col-span-3 row-span-1",
+};
+
+/* Cycle through sizes for projects that don't specify one */
+const SIZE_CYCLE: Array<"wide" | "tall" | "medium" | "small" | "mini"> = [
+  "wide", "tall", "medium", "small", "mini", "medium", "small", "mini",
 ];
+
+/* ─────────────────────────────────────────────
+   Single project card
+───────────────────────────────────────────── */
+function ProjectCard({ project, index }: { project: Project; index: number }) {
+  const size = project.size ?? SIZE_CYCLE[index % SIZE_CYCLE.length];
+  const accent = project.accentColor ?? "emerald-400";
+  const text = project.textColor ?? "text-emerald-400";
+
+  return (
+    <motion.div
+      layout
+      initial={{ opacity: 0, scale: 0.94, y: 16 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.94 }}
+      transition={{ duration: 0.45, delay: index * 0.04, ease: "easeOut" }}
+      className={`relative group overflow-hidden cursor-pointer ${SIZE_CLASSES[size]}
+        bg-black/40 backdrop-blur-md border border-white/10
+        hover:border-emerald-400/40 transition-all duration-500
+        rounded-xl`}
+      onClick={() => {
+        if (project.link) window.open(project.link, "_blank", "noopener,noreferrer");
+      }}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" && project.link)
+          window.open(project.link, "_blank", "noopener,noreferrer");
+      }}
+    >
+      {/* Background image */}
+      {project.image && (
+        <img
+          src={project.image}
+          alt={project.title}
+          className="absolute inset-0 w-full h-full object-cover opacity-100 group-hover:opacity-30 group-hover:scale-105 transition-all duration-700"
+        />
+      )}
+
+      {/* No image: gradient bg */}
+      {!project.image && (
+        <div
+          className={`absolute inset-0 bg-gradient-to-br ${
+            project.bgGradient ?? "from-teal-900/60 via-black to-black"
+          }`}
+        />
+      )}
+
+      {/* Dark overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+
+      {/* SVG pattern */}
+      <div className="absolute inset-0 opacity-10 group-hover:opacity-20 group-hover:scale-105 transition-all duration-700 pointer-events-none">
+        <ProjectSVGPattern id={project.id} />
+      </div>
+
+      {/* Teal glow on hover */}
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+        style={{ background: "radial-gradient(circle at 50% 80%, rgba(16,185,129,0.12) 0%, transparent 70%)" }} />
+
+      {/* External link badge */}
+      {project.link && (
+        <div className="absolute top-3 right-3 z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div className="bg-black/60 backdrop-blur-sm rounded-full p-2 border border-emerald-400/30">
+            <ExternalLink size={13} className="text-emerald-400" />
+          </div>
+        </div>
+      )}
+
+      {/* Ghost index number */}
+      <span
+        className="absolute top-2 left-4 font-black text-6xl md:text-8xl leading-none select-none pointer-events-none
+          text-white/5 group-hover:text-white/[0.07] transition-colors duration-500"
+        style={{ fontVariantNumeric: "tabular-nums" }}
+      >
+        {String(index + 1).padStart(2, "0")}
+      </span>
+
+      {/* Content */}
+      <div className="relative z-10 flex flex-col justify-end h-full p-4 sm:p-5 lg:p-6">
+        {/* Category / subcategory */}
+        <div className="flex items-center gap-2 mb-2">
+          <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          <span className="text-[10px] font-mono text-emerald-400 uppercase tracking-[0.2em]">
+            {project.category}
+            {project.subcategory ? ` / ${project.subcategory}` : ""}
+          </span>
+        </div>
+
+        {/* Title */}
+        <h3
+          className={`font-black text-lg sm:text-xl md:text-2xl uppercase leading-tight mb-1
+            bg-gradient-to-r from-green-400 via-emerald-400 to-teal-400 bg-clip-text text-transparent
+            group-hover:from-white group-hover:via-emerald-200 group-hover:to-white transition-all duration-500`}
+        >
+          {project.title}
+        </h3>
+
+        {/* Subtitle — revealed on hover */}
+        {project.subtitle && (
+          <div className="overflow-hidden">
+            <p
+              className="text-[11px] font-mono text-gray-400 leading-relaxed
+              max-h-0 opacity-0 group-hover:max-h-16 group-hover:opacity-100 transition-all duration-500 mb-3"
+            >
+              {project.subtitle}
+            </p>
+          </div>
+        )}
+
+        {/* Bottom row */}
+        <div className="flex items-center justify-between mt-2">
+          <div className="w-8 h-[1px] bg-gradient-to-r from-emerald-400 to-transparent" />
+          <div className="w-7 h-7 rounded-full border border-white/10 flex items-center justify-center
+            text-gray-500 group-hover:border-emerald-400 group-hover:text-emerald-400 transition-all duration-300">
+            <ArrowUpRight size={13} />
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   Main exported component
+   Props are intentionally identical to your
+   existing ProjectsCarousel so it's a drop-in
+───────────────────────────────────────────── */
+export default function ProjectsGrid({
+  projects = [],
+  subcategories = [],
+  category = null,
+  onProjectClick = () => {},
+  showDetails = true,
+}: {
+  projects?: Project[];
+  subcategories?: string[];
+  category?: string | null;
+  onProjectClick?: (p: Project) => void;
+  showDetails?: boolean;
+}) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const initialFiltered = useMemo(
+    () => (category ? projects.filter((p) => p.category === category) : projects),
+    [projects, category]
+  );
+
+  const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(
+    searchParams.get("sc") || null
+  );
+
+  const filteredProjects = useMemo(
+    () =>
+      initialFiltered.filter((p) =>
+        selectedSubcategory ? p.subcategory === selectedSubcategory : true
+      ),
+    [initialFiltered, selectedSubcategory]
+  );
+
+  return (
+    <div className="relative min-h-screen w-full bg-gradient-to-br from-black via-teal-900/30 to-black py-16 px-4 sm:px-6 lg:px-10">
+
+      {/* Section header — matches SectionHeader from home.tsx */}
+      <div className="max-w-7xl mx-auto mb-10">
+        <div className="bg-black/40 backdrop-blur-md rounded-lg border border-white/20 p-4 sm:p-5 mb-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div>
+              <div className="font-mono text-emerald-400 text-[10px] tracking-[0.2em] mb-3 uppercase border-l-2 border-emerald-400 pl-3">
+                // Selected Work
+              </div>
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                className="text-3xl sm:text-4xl md:text-5xl font-black uppercase
+                  bg-gradient-to-r from-green-400 via-emerald-400 to-teal-400 bg-clip-text text-transparent"
+              >
+                Our Projects
+              </motion.h1>
+            </div>
+            <motion.p
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.15 }}
+              className="font-mono text-[11px] text-gray-500 leading-relaxed uppercase tracking-tight md:text-right max-w-xs"
+            >
+              Showing{" "}
+              <span className="text-emerald-400">
+                {String(filteredProjects.length).padStart(2, "0")}
+              </span>{" "}
+              Projects
+            </motion.p>
+          </div>
+        </div>
+
+        {/* Filter bar — styled identical to the bottom pill bar but moved to top */}
+        <nav className="flex flex-wrap items-center gap-2 mb-10">
+          <button
+            onClick={() => {
+              setSelectedSubcategory(null);
+              router.push(pathname, { scroll: false });
+            }}
+            className={`px-4 py-1.5 font-mono text-xs uppercase tracking-wider rounded transition-all duration-300 ${
+              selectedSubcategory === null
+                ? "bg-emerald-400/20 text-emerald-200 border border-emerald-400/50 shadow-[0_0_12px_rgba(52,211,153,0.25)]"
+                : "border border-white/10 text-gray-400 hover:border-emerald-400/40 hover:text-emerald-400"
+            }`}
+          >
+            All
+          </button>
+          {subcategories.map((sc) => (
+            <button
+              key={sc}
+              onClick={() => {
+                setSelectedSubcategory(sc);
+                if (sc) router.push(`?sc=${sc}`, { scroll: false });
+              }}
+              className={`px-4 py-1.5 font-mono text-xs uppercase tracking-wider rounded transition-all duration-300 ${
+                selectedSubcategory === sc
+                  ? "bg-emerald-400/20 text-emerald-200 border border-emerald-400/50 shadow-[0_0_12px_rgba(52,211,153,0.25)]"
+                  : "border border-white/10 text-gray-400 hover:border-emerald-400/40 hover:text-emerald-400"
+              }`}
+            >
+              {sc}
+            </button>
+          ))}
+        </nav>
+
+        {/* Bento Grid */}
+        <motion.div
+          layout
+          className="grid grid-cols-12 auto-rows-[220px] sm:auto-rows-[240px] gap-3"
+        >
+          <AnimatePresence mode="popLayout">
+            {filteredProjects.map((project, idx) => (
+              <ProjectCard
+                key={project.id}
+                project={project}
+                index={idx}
+              />
+            ))}
+          </AnimatePresence>
+
+          {filteredProjects.length === 0 && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="col-span-12 flex flex-col items-center justify-center py-24 gap-4"
+            >
+              <div className="w-16 h-16 rounded-full border border-emerald-400/20 flex items-center justify-center">
+                <span className="text-2xl text-emerald-400/40">∅</span>
+              </div>
+              <p className="font-mono text-xs text-gray-500 uppercase tracking-widest">
+                No projects in this category
+              </p>
+            </motion.div>
+          )}
+        </motion.div>
+      </div>
+    </div>
+  );
+}
