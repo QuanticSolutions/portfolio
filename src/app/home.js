@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
-import { HeroSection } from "@/ui/ParallexHero";
+import HeroSection from "@/ui/ParallexHero";
 import { Clients } from "@/components/home/Clients";
 import Cta from "@/components/home/Cta";
 import FloatingStats from "@/components/home/FloatingStats";
