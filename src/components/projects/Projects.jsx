@@ -1,417 +1,362 @@
 "use client";
 import React, { useState, useMemo, useEffect } from "react";
-import { ChevronLeft, ChevronRight, Globe, ExternalLink } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ExternalLink, ArrowUpRight } from "lucide-react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 
-const useResponsiveSlides = () => {
-  const [visiblePerPage, setVisiblePerPage] = useState(3);
+/* ─────────────────────────────────────────────
+   Types  (keep identical to your existing data shape)
+───────────────────────────────────────────── */
+interface Project {
+  id: string | number;
+  title: string;
+  subtitle?: string;
+  category?: string;
+  subcategory?: string;
+  image?: string;
+  link?: string;
+  bgGradient?: string;
+  accentColor?: string;
+  textColor?: string;
+  /** "wide" | "tall" | "medium" | "small" | "mini"
+   *  If you don't supply size, the grid auto-assigns by index */
+  size?: "wide" | "tall" | "medium" | "small" | "mini";
+}
 
-  useEffect(() => {
-    const updateSlides = () => {
-      const width = window.innerWidth;
-      if (width < 640) {
-        setVisiblePerPage(1);
-      } else if (width >= 640 && width <= 1024) {
-        setVisiblePerPage(2);
-      } else {
-        setVisiblePerPage(3);
-      }
-    };
+/* ─────────────────────────────────────────────
+   SVG background patterns (deterministic by id)
+───────────────────────────────────────────── */
+function ProjectSVGPattern({ id }: { id: string | number }) {
+  const numId = typeof id === "number" ? id : parseInt(id as string) || 0;
 
-    updateSlides();
-    window.addEventListener("resize", updateSlides);
-    return () => window.removeEventListener("resize", updateSlides);
-  }, []);
+  if (numId % 4 === 0)
+    return (
+      <svg className="w-full h-full text-emerald-400" viewBox="0 0 100 100">
+        <defs>
+          <pattern id={`grid-${id}`} width="10" height="10" patternUnits="userSpaceOnUse">
+            <path d="M 10 0 L 0 0 0 10" fill="none" stroke="currentColor" strokeWidth="0.4" />
+          </pattern>
+        </defs>
+        <rect width="100" height="100" fill={`url(#grid-${id})`} />
+        {[...Array(4)].map((_, i) => (
+          <circle key={i} cx={50} cy={50} r={12 + i * 16} fill="none" stroke="currentColor" strokeWidth="0.25" opacity={0.5 - i * 0.1} />
+        ))}
+      </svg>
+    );
 
-  return visiblePerPage;
+  if (numId % 3 === 0)
+    return (
+      <svg className="w-full h-full text-teal-400" viewBox="0 0 100 100">
+        {[...Array(8)].map((_, i) => (
+          <line key={i} x1="0" y1={i * 14} x2="100" y2={i * 14 + (i % 2 === 0 ? 18 : -18)} stroke="currentColor" strokeWidth="0.25" />
+        ))}
+        <rect x="20" y="20" width="60" height="60" fill="none" stroke="currentColor" strokeWidth="0.15" strokeDasharray="2,2" />
+      </svg>
+    );
+
+  if (numId % 2 === 0)
+    return (
+      <svg className="w-full h-full text-green-400" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" strokeWidth="0.15" />
+        <path d="M 10 50 Q 50 10 90 50" fill="none" stroke="currentColor" strokeWidth="0.25" />
+        <path d="M 10 50 Q 50 90 90 50" fill="none" stroke="currentColor" strokeWidth="0.25" />
+        <rect x="47" y="5" width="6" height="90" fill="currentColor" opacity="0.06" />
+      </svg>
+    );
+
+  return (
+    <svg className="w-full h-full text-cyan-400" viewBox="0 0 100 100">
+      <defs>
+        <clipPath id={`clip-${id}`}>
+          <rect x="10" y="10" width="80" height="80" rx="8" />
+        </clipPath>
+      </defs>
+      <rect x="10" y="10" width="80" height="80" rx="8" fill="none" stroke="currentColor" strokeWidth="0.3" strokeDasharray="1,1" />
+      <g clipPath={`url(#clip-${id})`}>
+        <circle cx="20" cy="20" r="28" fill="currentColor" opacity="0.08" />
+        <circle cx="80" cy="80" r="28" fill="currentColor" opacity="0.08" />
+      </g>
+    </svg>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   Size → Tailwind grid-span classes
+   Mirrors the bento sizing from Doc 2
+───────────────────────────────────────────── */
+const SIZE_CLASSES: Record<string, string> = {
+  wide:   "col-span-12 md:col-span-7 row-span-2",
+  tall:   "col-span-12 md:col-span-5 row-span-2",
+  medium: "col-span-12 md:col-span-7 lg:col-span-5 row-span-1",
+  small:  "col-span-6 md:col-span-4 row-span-1",
+  mini:   "col-span-6 md:col-span-3 row-span-1",
 };
 
-export default function ProjectsCarousel({
+/* Cycle through sizes for projects that don't specify one */
+const SIZE_CYCLE: Array<"wide" | "tall" | "medium" | "small" | "mini"> = [
+  "wide", "tall", "medium", "small", "mini", "medium", "small", "mini",
+];
+
+/* ─────────────────────────────────────────────
+   Single project card
+───────────────────────────────────────────── */
+function ProjectCard({ project, index }: { project: Project; index: number }) {
+  const size = project.size ?? SIZE_CYCLE[index % SIZE_CYCLE.length];
+  const accent = project.accentColor ?? "emerald-400";
+  const text = project.textColor ?? "text-emerald-400";
+
+  return (
+    <motion.div
+      layout
+      initial={{ opacity: 0, scale: 0.94, y: 16 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.94 }}
+      transition={{ duration: 0.45, delay: index * 0.04, ease: "easeOut" }}
+      className={`relative group overflow-hidden cursor-pointer ${SIZE_CLASSES[size]}
+        bg-black/40 backdrop-blur-md border border-white/10
+        hover:border-emerald-400/40 transition-all duration-500
+        rounded-xl`}
+      onClick={() => {
+        if (project.link) window.open(project.link, "_blank", "noopener,noreferrer");
+      }}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" && project.link)
+          window.open(project.link, "_blank", "noopener,noreferrer");
+      }}
+    >
+      {/* Background image */}
+      {project.image && (
+        <img
+          src={project.image}
+          alt={project.title}
+          className="absolute inset-0 w-full h-full object-cover opacity-100 group-hover:opacity-30 group-hover:scale-105 transition-all duration-700"
+        />
+      )}
+
+      {/* No image: gradient bg */}
+      {!project.image && (
+        <div
+          className={`absolute inset-0 bg-gradient-to-br ${
+            project.bgGradient ?? "from-teal-900/60 via-black to-black"
+          }`}
+        />
+      )}
+
+      {/* Dark overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+
+      {/* SVG pattern */}
+      <div className="absolute inset-0 opacity-10 group-hover:opacity-20 group-hover:scale-105 transition-all duration-700 pointer-events-none">
+        <ProjectSVGPattern id={project.id} />
+      </div>
+
+      {/* Teal glow on hover */}
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+        style={{ background: "radial-gradient(circle at 50% 80%, rgba(16,185,129,0.12) 0%, transparent 70%)" }} />
+
+      {/* External link badge */}
+      {project.link && (
+        <div className="absolute top-3 right-3 z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div className="bg-black/60 backdrop-blur-sm rounded-full p-2 border border-emerald-400/30">
+            <ExternalLink size={13} className="text-emerald-400" />
+          </div>
+        </div>
+      )}
+
+      {/* Ghost index number */}
+      <span
+        className="absolute top-2 left-4 font-black text-6xl md:text-8xl leading-none select-none pointer-events-none
+          text-white/5 group-hover:text-white/[0.07] transition-colors duration-500"
+        style={{ fontVariantNumeric: "tabular-nums" }}
+      >
+        {String(index + 1).padStart(2, "0")}
+      </span>
+
+      {/* Content */}
+      <div className="relative z-10 flex flex-col justify-end h-full p-4 sm:p-5 lg:p-6">
+        {/* Category / subcategory */}
+        <div className="flex items-center gap-2 mb-2">
+          <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          <span className="text-[10px] font-mono text-emerald-400 uppercase tracking-[0.2em]">
+            {project.category}
+            {project.subcategory ? ` / ${project.subcategory}` : ""}
+          </span>
+        </div>
+
+        {/* Title */}
+        <h3
+          className={`font-black text-lg sm:text-xl md:text-2xl uppercase leading-tight mb-1
+            bg-gradient-to-r from-green-400 via-emerald-400 to-teal-400 bg-clip-text text-transparent
+            group-hover:from-white group-hover:via-emerald-200 group-hover:to-white transition-all duration-500`}
+        >
+          {project.title}
+        </h3>
+
+        {/* Subtitle — revealed on hover */}
+        {project.subtitle && (
+          <div className="overflow-hidden">
+            <p
+              className="text-[11px] font-mono text-gray-400 leading-relaxed
+              max-h-0 opacity-0 group-hover:max-h-16 group-hover:opacity-100 transition-all duration-500 mb-3"
+            >
+              {project.subtitle}
+            </p>
+          </div>
+        )}
+
+        {/* Bottom row */}
+        <div className="flex items-center justify-between mt-2">
+          <div className="w-8 h-[1px] bg-gradient-to-r from-emerald-400 to-transparent" />
+          <div className="w-7 h-7 rounded-full border border-white/10 flex items-center justify-center
+            text-gray-500 group-hover:border-emerald-400 group-hover:text-emerald-400 transition-all duration-300">
+            <ArrowUpRight size={13} />
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   Main exported component
+   Props are intentionally identical to your
+   existing ProjectsCarousel so it's a drop-in
+───────────────────────────────────────────── */
+export default function ProjectsGrid({
   projects = [],
   subcategories = [],
   category = null,
   onProjectClick = () => {},
   showDetails = true,
+}: {
+  projects?: Project[];
+  subcategories?: string[];
+  category?: string | null;
+  onProjectClick?: (p: Project) => void;
+  showDetails?: boolean;
 }) {
-  const initialFiltered = useMemo(
-    () =>
-      category ? projects.filter((p) => p.category === category) : projects,
-    [projects, category]
-  );
-
-  const visiblePerPage = useResponsiveSlides();
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [selectedSubcategory, setSelectedSubcategory] = useState(
+
+  const initialFiltered = useMemo(
+    () => (category ? projects.filter((p) => p.category === category) : projects),
+    [projects, category]
+  );
+
+  const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(
     searchParams.get("sc") || null
   );
-  const [filteredProjects, setFilteredProjects] = useState(initialFiltered);
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
 
-  useEffect(() => {
-    const next = initialFiltered.filter((p) =>
-      selectedSubcategory ? p.subcategory === selectedSubcategory : true
-    );
-    setFilteredProjects(next);
-    setCurrentSlide(0);
-  }, [initialFiltered, selectedSubcategory]);
-
-  const maxSlide = Math.max(0, filteredProjects.length - visiblePerPage);
-
-  const nextSlide = () => {
-    if (isTransitioning) return;
-    setIsTransitioning(true);
-    setCurrentSlide((prev) => {
-      const next = prev + visiblePerPage;
-      return next > maxSlide ? maxSlide : next;
-    });
-    setTimeout(() => setIsTransitioning(false), 700);
-  };
-
-  const prevSlide = () => {
-    if (isTransitioning) return;
-    setIsTransitioning(true);
-    setCurrentSlide((prev) => {
-      const next = prev - visiblePerPage;
-      return next < 0 ? 0 : next;
-    });
-    setTimeout(() => setIsTransitioning(false), 700);
-  };
-
-  useEffect(() => {
-    const handleWheel = (e) => {
-      if (isTransitioning) return;
-      e.preventDefault();
-      if (e.deltaY > 0) {
-        if (currentSlide < maxSlide) nextSlide();
-      } else {
-        if (currentSlide > 0) prevSlide();
-      }
-    };
-    document.body.style.overflow = "hidden";
-    window.addEventListener("wheel", handleWheel, { passive: false });
-    return () => {
-      window.removeEventListener("wheel", handleWheel);
-      document.body.style.overflow = "auto";
-    };
-  }, [isTransitioning, currentSlide, maxSlide]);
-
-  const getVisible = () => {
-    const out = [];
-    for (let i = 0; i < visiblePerPage; i++) {
-      const idx = currentSlide + i;
-      if (idx < filteredProjects.length) out.push(filteredProjects[idx]);
-    }
-    return out;
-  };
-
-  const SVGPattern = ({ pattern, className = "", color = "emerald-400" }) => {
-    const colorClass = `text-${color}`;
-    if (!pattern) return null;
-    return (
-      <div className={`absolute inset-0 opacity-15 ${className}`}>
-        <svg
-          width="100%"
-          height="100%"
-          viewBox="0 0 400 600"
-          className={colorClass}
-        >
-          <path
-            d="M0,150 Q100,100 200,150 T400,150"
-            stroke="currentColor"
-            strokeWidth="2"
-            fill="none"
-            opacity="0.25"
-          />
-        </svg>
-      </div>
-    );
-  };
-
-  const getSlideWidth = () => {
-    if (visiblePerPage === 1) return "w-full";
-    if (visiblePerPage === 2) return "w-1/2";
-    return "w-1/3";
-  };
+  const filteredProjects = useMemo(
+    () =>
+      initialFiltered.filter((p) =>
+        selectedSubcategory ? p.subcategory === selectedSubcategory : true
+      ),
+    [initialFiltered, selectedSubcategory]
+  );
 
   return (
-    <div className="relative">
-      <style jsx>{`
-        .slide-left {
-          animation: slideInLeft 0.9s ease-out both;
-        }
-        .slide-right {
-          animation: slideInRight 0.9s ease-out both;
-        }
-        .slide-center {
-          animation: slideInCenter 0.9s ease-out both;
-        }
-        @keyframes slideInLeft {
-          0% {
-            transform: translateX(-60px) scale(0.98);
-            opacity: 0;
-          }
-          100% {
-            transform: translateX(0) scale(1);
-            opacity: 1;
-          }
-        }
-        @keyframes slideInRight {
-          0% {
-            transform: translateX(60px) scale(0.98);
-            opacity: 0;
-          }
-          100% {
-            transform: translateX(0px) scale(1);
-            opacity: 1;
-          }
-        }
-        @keyframes slideInCenter {
-          0% {
-            transform: translateY(18px) scale(0.98);
-            opacity: 0;
-          }
-          100% {
-            transform: translateY(0) scale(1.01);
-            opacity: 1;
-          }
-        }
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-      `}</style>
+    <div className="relative min-h-screen w-full bg-gradient-to-br from-black via-teal-900/30 to-black py-16 px-4 sm:px-6 lg:px-10">
 
-      <div className="h-[100vh] w-full relative overflow-hidden">
-        <button
-          onClick={prevSlide}
-          disabled={currentSlide === 0 || isTransitioning}
-          className={`absolute left-2 sm:left-4 lg:left-6 top-1/2 -translate-y-1/2 z-40 w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition ${
-            currentSlide === 0
-              ? "opacity-40 cursor-not-allowed"
-              : "bg-black/40 hover:bg-emerald-400/10"
-          }`}
-          aria-label="Previous"
-        >
-          <ChevronLeft size={18} className="text-emerald-300 sm:w-5 sm:h-5" />
-        </button>
-
-        <button
-          onClick={nextSlide}
-          disabled={currentSlide >= maxSlide || isTransitioning}
-          className={`absolute right-2 sm:right-4 lg:right-6 top-1/2 -translate-y-1/2 z-40 w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition ${
-            currentSlide >= maxSlide
-              ? "opacity-40 cursor-not-allowed"
-              : "bg-black/40 hover:bg-emerald-400/10"
-          }`}
-          aria-label="Next"
-        >
-          <ChevronRight size={18} className="text-emerald-300 sm:w-5 sm:h-5" />
-        </button>
-
-        <div className="flex h-full w-full">
-          {getVisible().map((project, i) => {
-            const animationClass =
-              i === 0
-                ? "slide-left"
-                : i === visiblePerPage - 1
-                ? "slide-right"
-                : "slide-center";
-
-            return (
-              <div
-                key={project.id}
-                className={`${getSlideWidth()} h-full flex-shrink-0 relative bg-gradient-to-br ${
-                  project.bgGradient ?? "from-teal-900 via-black to-teal-900"
-                }
-        flex flex-col justify-between p-3 sm:p-6 lg:p-8 overflow-hidden group cursor-pointer transition-all duration-700 ${animationClass}`}
-                style={{
-                  boxShadow: project.isCenter
-                    ? "inset 0 0 100px rgba(0,0,0,0.3)"
-                    : "none",
-                }}
-                onClick={() => {
-                  if (project.link) {
-                    window.open(project.link, "_blank", "noopener,noreferrer");
-                  }
-                  onProjectClick(project);
-                }}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    if (project.link) {
-                      window.open(
-                        project.link,
-                        "_blank",
-                        "noopener,noreferrer"
-                      );
-                    }
-                    onProjectClick(project);
-                  }
-                }}
-              >
-                {project.image && (
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className={`absolute inset-0 w-full h-full object-cover transition-all duration-500
-            ${
-              showDetails
-                ? "opacity-100 scale-100 group-hover:opacity-0 group-hover:scale-105"
-                : "opacity-100"
-            }
-          `}
-                  />
-                )}
-                {showDetails && (
-                  <div className="absolute inset-0 bg-black/40" />
-                )}
-                {project.link && (
-                  <div className="absolute top-3 sm:top-4 right-3 sm:right-4 z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div className="bg-black/60 backdrop-blur-sm rounded-full p-2 sm:p-2.5">
-                      <ExternalLink
-                        size={14}
-                        className={`${
-                          project.textColor ?? "text-emerald-400"
-                        } sm:w-4 sm:h-4`}
-                      />
-                    </div>
-                  </div>
-                )}
-                {showDetails && (
-                  <>
-                    <SVGPattern
-                      pattern={project.svgPattern}
-                      color={project.accentColor ?? "emerald-400"}
-                      className="pointer-events-none"
-                    />
-                    <div
-                      className={`relative z-20 flex-1 flex flex-col justify-center transition-all duration-500 ${
-                        visiblePerPage === 1
-                          ? "opacity-100 scale-100"
-                          : "opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100"
-                      }`}
-                    >
-                      <h2
-                        className={`text-xl sm:text-3xl md:text-4xl lg:text-5xl font-black ${
-                          project.textColor ?? "text-emerald-400"
-                        } leading-tight sm:leading-none mb-1 sm:mb-2 break-words`}
-                      >
-                        {project.title}
-                      </h2>
-                      <div
-                        className={`text-sm sm:text-base lg:text-lg ${
-                          project.textColor ?? "text-emerald-300"
-                        } opacity-70 mb-2 sm:mb-3 font-light leading-relaxed`}
-                      >
-                        {project.subtitle}
-                      </div>
-                      <div
-                        className={`text-xs font-mono ${
-                          project.textColor ?? "text-emerald-300"
-                        } opacity-50 uppercase tracking-widest sm:tracking-[3px] mb-3 sm:mb-6 break-words`}
-                      >
-                        {project.category}
-                        {project.subcategory ? (
-                          <>
-                            <br className="sm:hidden" />
-                            <span className="hidden sm:inline"> / </span>
-                            <span className="sm:inline">
-                              {project.subcategory}
-                            </span>
-                          </>
-                        ) : (
-                          ""
-                        )}
-                      </div>
-                      <div
-                        className={`w-8 sm:w-16 h-0.5 bg-gradient-to-r from-${
-                          project.accentColor ?? "emerald-400"
-                        } to-transparent`}
-                      />
-                    </div>
-                    {visiblePerPage === 1 && (
-                      <div className="sm:hidden absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/60 to-transparent p-3">
-                        <div
-                          className={`text-sm font-semibold ${
-                            project.textColor ?? "text-emerald-400"
-                          } mb-1 flex items-center gap-2`}
-                        >
-                          {project.title}
-                          {project.link && (
-                            <ExternalLink size={12} className="opacity-60" />
-                          )}
-                        </div>
-                        <div
-                          className={`text-xs ${
-                            project.textColor ?? "text-emerald-300"
-                          } opacity-70`}
-                        >
-                          {project.category}
-                          {project.subcategory
-                            ? ` • ${project.subcategory}`
-                            : ""}
-                        </div>
-                      </div>
-                    )}
-                  </>
-                )}
+      {/* Section header — matches SectionHeader from home.tsx */}
+      <div className="max-w-7xl mx-auto mb-10">
+        <div className="bg-black/40 backdrop-blur-md rounded-lg border border-white/20 p-4 sm:p-5 mb-8">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div>
+              <div className="font-mono text-emerald-400 text-[10px] tracking-[0.2em] mb-3 uppercase border-l-2 border-emerald-400 pl-3">
+                // Selected Work
               </div>
-            );
-          })}
-        </div>
-        {visiblePerPage === 1 && (
-          <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 flex items-center gap-2 text-white/60 text-xs">
-            <ChevronLeft size={14} />
-            <span>Swipe or use arrows</span>
-            <ChevronRight size={14} />
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                className="text-3xl sm:text-4xl md:text-5xl font-black uppercase
+                  bg-gradient-to-r from-green-400 via-emerald-400 to-teal-400 bg-clip-text text-transparent"
+              >
+                Our Projects
+              </motion.h1>
+            </div>
+            <motion.p
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.15 }}
+              className="font-mono text-[11px] text-gray-500 leading-relaxed uppercase tracking-tight md:text-right max-w-xs"
+            >
+              Showing{" "}
+              <span className="text-emerald-400">
+                {String(filteredProjects.length).padStart(2, "0")}
+              </span>{" "}
+              Projects
+            </motion.p>
           </div>
-        )}
-      </div>
-      <div className="fixed bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-50 px-4 max-w-[calc(100vw-2rem)]">
-        <div className="flex items-center justify-center gap-1 sm:gap-3 bg-gray-900/70 backdrop-blur-md border border-emerald-400/20 rounded-full px-2 sm:px-4 py-2 shadow-2xl overflow-x-auto scrollbar-hide max-w-full">
+        </div>
+
+        {/* Filter bar — styled identical to the bottom pill bar but moved to top */}
+        <nav className="flex flex-wrap items-center gap-2 mb-10">
           <button
-            onClick={(e) => {
-              e.stopPropagation();
+            onClick={() => {
               setSelectedSubcategory(null);
               router.push(pathname, { scroll: false });
             }}
-            className={`px-2 sm:px-3 py-1 rounded-full text-xs transition-all whitespace-nowrap flex-shrink-0 ${
+            className={`px-4 py-1.5 font-mono text-xs uppercase tracking-wider rounded transition-all duration-300 ${
               selectedSubcategory === null
-                ? "bg-emerald-400/20 text-emerald-200"
-                : "text-gray-300 hover:bg-emerald-400/10"
+                ? "bg-emerald-400/20 text-emerald-200 border border-emerald-400/50 shadow-[0_0_12px_rgba(52,211,153,0.25)]"
+                : "border border-white/10 text-gray-400 hover:border-emerald-400/40 hover:text-emerald-400"
             }`}
           >
             All
           </button>
-          {subcategories &&
-            subcategories.map((sc) => (
-              <button
-                key={sc}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  console.log(sc);
-                  if (sc != "") {
-                    router.push(`?sc=${sc}`, { scroll: false });
-                  }
-                  setSelectedSubcategory(sc);
-                }}
-                className={`px-2 sm:px-3 py-1 rounded-full text-xs transition-all whitespace-nowrap flex-shrink-0 ${
-                  selectedSubcategory === sc
-                    ? "bg-emerald-400/20 text-emerald-200"
-                    : "text-gray-300 hover:bg-emerald-400/10"
-                }`}
-              >
-                {sc}
-              </button>
+          {subcategories.map((sc) => (
+            <button
+              key={sc}
+              onClick={() => {
+                setSelectedSubcategory(sc);
+                if (sc) router.push(`?sc=${sc}`, { scroll: false });
+              }}
+              className={`px-4 py-1.5 font-mono text-xs uppercase tracking-wider rounded transition-all duration-300 ${
+                selectedSubcategory === sc
+                  ? "bg-emerald-400/20 text-emerald-200 border border-emerald-400/50 shadow-[0_0_12px_rgba(52,211,153,0.25)]"
+                  : "border border-white/10 text-gray-400 hover:border-emerald-400/40 hover:text-emerald-400"
+              }`}
+            >
+              {sc}
+            </button>
+          ))}
+        </nav>
+
+        {/* Bento Grid */}
+        <motion.div
+          layout
+          className="grid grid-cols-12 auto-rows-[220px] sm:auto-rows-[240px] gap-3"
+        >
+          <AnimatePresence mode="popLayout">
+            {filteredProjects.map((project, idx) => (
+              <ProjectCard
+                key={project.id}
+                project={project}
+                index={idx}
+              />
             ))}
-        </div>
+          </AnimatePresence>
+
+          {filteredProjects.length === 0 && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="col-span-12 flex flex-col items-center justify-center py-24 gap-4"
+            >
+              <div className="w-16 h-16 rounded-full border border-emerald-400/20 flex items-center justify-center">
+                <span className="text-2xl text-emerald-400/40">∅</span>
+              </div>
+              <p className="font-mono text-xs text-gray-500 uppercase tracking-widest">
+                No projects in this category
+              </p>
+            </motion.div>
+          )}
+        </motion.div>
       </div>
     </div>
   );
