@@ -1,107 +1,47 @@
 "use client";
 import React, { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ExternalLink, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 
 /* ─────────────────────────────────────────────
-   Staggered scroll-triggered animation variants
+   Animation variants
 ───────────────────────────────────────────── */
 const cardVariants = {
-  hidden: { opacity: 0, y: 24, scale: 0.97 },
+  hidden:  { opacity: 0, y: 20, scale: 0.98 },
   visible: (i) => ({
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: {
-      duration: 0.52,
-      delay: i * 0.055,
-      ease: [0.22, 1, 0.36, 1],
-    },
+    opacity: 1, y: 0, scale: 1,
+    transition: { duration: 0.5, delay: i * 0.05, ease: [0.22, 1, 0.36, 1] },
   }),
   exit: {
-    opacity: 0,
-    scale: 0.96,
-    y: -8,
-    transition: { duration: 0.28, ease: "easeIn" },
+    opacity: 0, scale: 0.97, y: -6,
+    transition: { duration: 0.25, ease: "easeIn" },
   },
 };
 
 /* ─────────────────────────────────────────────
-   SVG background patterns (deterministic by id)
-───────────────────────────────────────────── */
-function ProjectSVGPattern({ id }) {
-  const numId = typeof id === "number" ? id : parseInt(id) || 0;
-
-  if (numId % 4 === 0)
-    return (
-      <svg className="w-full h-full text-emerald-400" viewBox="0 0 100 100">
-        <defs>
-          <pattern id={`grid-${id}`} width="10" height="10" patternUnits="userSpaceOnUse">
-            <path d="M 10 0 L 0 0 0 10" fill="none" stroke="currentColor" strokeWidth="0.4" />
-          </pattern>
-        </defs>
-        <rect width="100" height="100" fill={`url(#grid-${id})`} />
-        {[...Array(4)].map((_, i) => (
-          <circle key={i} cx={50} cy={50} r={12 + i * 16} fill="none" stroke="currentColor" strokeWidth="0.25" opacity={0.5 - i * 0.1} />
-        ))}
-      </svg>
-    );
-
-  if (numId % 3 === 0)
-    return (
-      <svg className="w-full h-full text-teal-400" viewBox="0 0 100 100">
-        {[...Array(8)].map((_, i) => (
-          <line key={i} x1="0" y1={i * 14} x2="100" y2={i * 14 + (i % 2 === 0 ? 18 : -18)} stroke="currentColor" strokeWidth="0.25" />
-        ))}
-        <rect x="20" y="20" width="60" height="60" fill="none" stroke="currentColor" strokeWidth="0.15" strokeDasharray="2,2" />
-      </svg>
-    );
-
-  if (numId % 2 === 0)
-    return (
-      <svg className="w-full h-full text-green-400" viewBox="0 0 100 100">
-        <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" strokeWidth="0.15" />
-        <path d="M 10 50 Q 50 10 90 50" fill="none" stroke="currentColor" strokeWidth="0.25" />
-        <path d="M 10 50 Q 50 90 90 50" fill="none" stroke="currentColor" strokeWidth="0.25" />
-        <rect x="47" y="5" width="6" height="90" fill="currentColor" opacity="0.06" />
-      </svg>
-    );
-
-  return (
-    <svg className="w-full h-full text-cyan-400" viewBox="0 0 100 100">
-      <defs>
-        <clipPath id={`clip-${id}`}>
-          <rect x="10" y="10" width="80" height="80" rx="8" />
-        </clipPath>
-      </defs>
-      <rect x="10" y="10" width="80" height="80" rx="8" fill="none" stroke="currentColor" strokeWidth="0.3" strokeDasharray="1,1" />
-      <g clipPath={`url(#clip-${id})`}>
-        <circle cx="20" cy="20" r="28" fill="currentColor" opacity="0.08" />
-        <circle cx="80" cy="80" r="28" fill="currentColor" opacity="0.08" />
-      </g>
-    </svg>
-  );
-}
-
-/* ─────────────────────────────────────────────
-   Sleeker size → Tailwind grid-span classes
+   Size → grid-span classes  (reference layout)
+   wide  = large left card (like "Feeminy" tall card)
+   tall  = right-side tall card
+   small = standard half-width card
+   mini  = small card
 ───────────────────────────────────────────── */
 const SIZE_CLASSES = {
-  wide:   "col-span-12 md:col-span-8 row-span-2",
+  wide:   "col-span-12 md:col-span-5 row-span-2",
   tall:   "col-span-12 md:col-span-4 row-span-2",
-  medium: "col-span-12 sm:col-span-6 md:col-span-5 row-span-1",
-  small:  "col-span-6 md:col-span-4 row-span-1",
+  medium: "col-span-12 sm:col-span-6 md:col-span-4 row-span-1",
+  small:  "col-span-6 md:col-span-3 row-span-1",
   mini:   "col-span-6 md:col-span-3 row-span-1",
 };
 
 const SIZE_CYCLE = ["wide", "tall", "medium", "small", "mini", "medium", "small", "mini"];
 
 /* ─────────────────────────────────────────────
-   Single project card
+   Single card  — matches reference exactly
 ───────────────────────────────────────────── */
 function ProjectCard({ project, index }) {
   const size = project.size ?? SIZE_CYCLE[index % SIZE_CYCLE.length];
+  const num  = String(index + 1).padStart(2, "0");
 
   return (
     <motion.div
@@ -111,12 +51,21 @@ function ProjectCard({ project, index }) {
       initial="hidden"
       whileInView="visible"
       exit="exit"
-      viewport={{ once: true, amount: 0.12 }}
-      whileHover={{ scale: 1.012, transition: { duration: 0.22, ease: "easeOut" } }}
+      viewport={{ once: true, amount: 0.1 }}
       className={`relative group overflow-hidden cursor-pointer ${SIZE_CLASSES[size]}
-        bg-black/50 backdrop-blur-md border border-white/[0.07]
-        hover:border-emerald-400/30 rounded-lg`}
-      style={{ transition: "border-color 0.3s ease, box-shadow 0.3s ease" }}
+        rounded-xl border border-white/[0.06] bg-[#0a0a0a]`}
+      style={{
+        boxShadow: "0 0 0 0 rgba(52,211,153,0)",
+        transition: "box-shadow 0.4s ease, border-color 0.4s ease",
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.boxShadow = "0 0 0 1.5px rgba(52,211,153,0.55), 0 0 28px rgba(52,211,153,0.12)";
+        e.currentTarget.style.borderColor = "rgba(52,211,153,0.5)";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.boxShadow = "0 0 0 0 rgba(52,211,153,0)";
+        e.currentTarget.style.borderColor = "rgba(255,255,255,0.06)";
+      }}
       onClick={() => {
         if (project.link) window.open(project.link, "_blank", "noopener,noreferrer");
       }}
@@ -127,100 +76,87 @@ function ProjectCard({ project, index }) {
           window.open(project.link, "_blank", "noopener,noreferrer");
       }}
     >
-      {/* Background image */}
-      {project.image && (
+      {/* ── Background image ── */}
+      {project.image ? (
         <img
           src={project.image}
           alt={project.title}
-          className="absolute inset-0 w-full h-full object-cover opacity-100 group-hover:opacity-25 group-hover:scale-105 transition-all duration-700"
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
+      ) : (
+        <div className={`absolute inset-0 bg-gradient-to-br ${project.bgGradient ?? "from-[#0d1f1a] via-[#0a0a0a] to-[#0a0f0d]"}`} />
       )}
 
-      {/* No image: gradient */}
-      {!project.image && (
-        <div className={`absolute inset-0 bg-gradient-to-br ${project.bgGradient ?? "from-teal-900/50 via-black to-black"}`} />
-      )}
+      {/* ── Persistent dark gradient so text is always readable ── */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/10" />
 
-      {/* Dark overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
-
-      {/* SVG pattern */}
-      <div className="absolute inset-0 opacity-[0.08] group-hover:opacity-[0.16] group-hover:scale-105 transition-all duration-700 pointer-events-none">
-        <ProjectSVGPattern id={project.id} />
-      </div>
-
-      {/* Teal radial glow on hover */}
+      {/* ── Green glow overlay on hover (matches reference) ── */}
       <div
         className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-        style={{ background: "radial-gradient(circle at 50% 90%, rgba(16,185,129,0.10) 0%, transparent 65%)" }}
+        style={{ background: "radial-gradient(ellipse at 50% 110%, rgba(52,211,153,0.13) 0%, transparent 65%)" }}
       />
 
-      {/* External link badge */}
-      {project.link && (
-        <div className="absolute top-2.5 right-2.5 z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <div className="bg-black/70 backdrop-blur-sm rounded-full p-1.5 border border-emerald-400/25">
-            <ExternalLink size={11} className="text-emerald-400" />
-          </div>
-        </div>
-      )}
+      {/* ── TOP ROW: category pill (left) + number (right) ── */}
+      <div className="absolute top-3 left-3 right-3 z-20 flex items-center justify-between">
+        {/* Category pill — reference style: small dark bg, green text */}
+        <span className="px-2 py-0.5 rounded-full text-[9px] font-mono uppercase tracking-[0.18em]
+          bg-black/60 backdrop-blur-sm border border-emerald-400/20 text-emerald-400">
+          {project.subcategory
+            ? `${project.category} / ${project.subcategory}`
+            : project.category}
+        </span>
 
-      {/* Ghost index number */}
-      <span className="absolute top-1 left-3 font-black text-5xl md:text-7xl leading-none select-none pointer-events-none text-white/[0.04] group-hover:text-white/[0.065] transition-colors duration-500">
-        {String(index + 1).padStart(2, "0")}
-      </span>
+        {/* Number badge — reference: gray, top-right */}
+        <span className="font-mono text-[10px] text-white/30 tabular-nums">
+          / {num}
+        </span>
+      </div>
 
-      {/* Content */}
-      <div className="relative z-10 flex flex-col justify-end h-full p-3.5 sm:p-4">
-        {/* Category pill */}
-        <div className="flex items-center gap-1.5 mb-1.5">
-          <div className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" />
-          <span className="text-[9px] font-mono text-emerald-400 uppercase tracking-[0.18em]">
-            {project.category}
-            {project.subcategory ? ` / ${project.subcategory}` : ""}
-          </span>
-        </div>
-
+      {/* ── BOTTOM ROW: title + subtitle + arrow ── */}
+      <div className="absolute bottom-0 left-0 right-0 z-20 p-3.5 sm:p-4">
         {/* Title */}
-        <h3 className="font-black text-sm sm:text-base md:text-lg uppercase leading-tight mb-1
-          bg-gradient-to-r from-green-400 via-emerald-400 to-teal-400 bg-clip-text text-transparent
-          group-hover:from-white group-hover:via-emerald-100 group-hover:to-white transition-all duration-500">
+        <h3 className="font-bold text-sm sm:text-base text-white leading-snug mb-0.5
+          group-hover:text-emerald-300 transition-colors duration-300">
           {project.title}
         </h3>
 
-        {/* Subtitle — slides in on hover */}
-        {project.subtitle && (
-          <div className="overflow-hidden">
-            <p className="text-[10px] font-mono text-gray-400 leading-relaxed max-h-0 opacity-0 group-hover:max-h-12 group-hover:opacity-100 transition-all duration-400 mb-2">
-              {project.subtitle}
-            </p>
-          </div>
-        )}
+        {/* Subtitle / date line — reference shows "Case study · 2024" */}
+        <p className="font-mono text-[10px] text-white/35 group-hover:text-white/50 transition-colors duration-300">
+          {project.subtitle ?? "Case study · 2024"}
+        </p>
 
-        {/* Bottom divider + arrow */}
-        <div className="flex items-center justify-between mt-1.5">
-          <div className="w-6 h-px bg-gradient-to-r from-emerald-400 to-transparent" />
-          <div className="w-6 h-6 rounded-full border border-white/10 flex items-center justify-center
-            text-gray-500 group-hover:border-emerald-400/60 group-hover:text-emerald-400 transition-all duration-300">
-            <ArrowUpRight size={11} />
-          </div>
-        </div>
+        {/* Arrow button — reference: round green button bottom-right */}
+        <motion.div
+          className="absolute bottom-3.5 right-3.5 w-7 h-7 rounded-full
+            flex items-center justify-center
+            bg-black/50 border border-white/10
+            group-hover:bg-emerald-400 group-hover:border-emerald-400
+            transition-all duration-300"
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.93 }}
+        >
+          <ArrowUpRight
+            size={13}
+            className="text-white/50 group-hover:text-black transition-colors duration-300"
+          />
+        </motion.div>
       </div>
     </motion.div>
   );
 }
 
 /* ─────────────────────────────────────────────
-   Main component — same props as ProjectsCarousel
+   Main component
 ───────────────────────────────────────────── */
 export default function ProjectsGrid({
-  projects = [],
+  projects      = [],
   subcategories = [],
-  category = null,
+  category      = null,
   onProjectClick = () => {},
-  showDetails = true,
+  showDetails   = true,
 }) {
-  const router = useRouter();
-  const pathname = usePathname();
+  const router       = useRouter();
+  const pathname     = usePathname();
   const searchParams = useSearchParams();
 
   const initialFiltered = useMemo(
@@ -241,79 +177,81 @@ export default function ProjectsGrid({
   );
 
   return (
-    <div className="relative min-h-screen w-full bg-gradient-to-br from-black via-teal-900/25 to-black
-      pt-28 pb-14 px-6 sm:px-10 md:px-16 lg:px-24 xl:px-32">
+    <div className="relative min-h-screen w-full bg-[#050505]
+      pt-28 pb-16 px-6 sm:px-10 md:px-16 lg:px-24 xl:px-32">
       <div className="max-w-6xl mx-auto">
 
-        {/* ── Section header ── */}
+        {/* ── Header row — matches reference "THE ARCHIVE" style ── */}
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55, ease: "easeOut" }}
-          className="bg-black/40 backdrop-blur-md rounded-lg border border-white/[0.12] p-4 sm:p-5 mb-6"
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8"
         >
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-3">
-            <div>
-              <div className="font-mono text-emerald-400 text-[9px] tracking-[0.22em] mb-2.5 uppercase border-l-2 border-emerald-400 pl-2.5">
-                // Selected Work
-              </div>
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-black uppercase
-                bg-gradient-to-r from-green-400 via-emerald-400 to-teal-400 bg-clip-text text-transparent">
-                Our Projects
-              </h1>
+          <div>
+            {/* Eyebrow — "SELECTED INDEX — 2024 / 25" */}
+            <div className="flex items-center gap-2 mb-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+              <span className="font-mono text-[9px] uppercase tracking-[0.25em] text-emerald-400">
+                Selected Index — 2024 / {String(filteredProjects.length).padStart(2, "0")}
+              </span>
             </div>
-            <p className="font-mono text-[10px] text-gray-500 uppercase tracking-tight md:text-right">
-              Showing{" "}
-              <span className="text-emerald-400">
-                {String(filteredProjects.length).padStart(2, "0")}
-              </span>{" "}
-              Projects
-            </p>
+            {/* Big heading */}
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight leading-none">
+              <span className="text-white">THE </span>
+              <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-green-400 bg-clip-text text-transparent">
+                ARCHIVE
+              </span>
+            </h1>
           </div>
-        </motion.div>
 
-        {/* ── Filter bar ── */}
-        <motion.nav
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45, delay: 0.1 }}
-          className="flex flex-wrap items-center gap-2 mb-6"
-        >
-          <button
-            onClick={() => {
-              setSelectedSubcategory(null);
-              router.push(pathname, { scroll: false });
-            }}
-            className={`px-3.5 py-1 font-mono text-[10px] uppercase tracking-wider rounded transition-all duration-300 ${
-              selectedSubcategory === null
-                ? "bg-emerald-400/15 text-emerald-300 border border-emerald-400/45 shadow-[0_0_10px_rgba(52,211,153,0.18)]"
-                : "border border-white/[0.08] text-gray-500 hover:border-emerald-400/35 hover:text-emerald-400"
-            }`}
+          {/* ── Pill filter tabs — reference style ── */}
+          <motion.nav
+            initial={{ opacity: 0, x: 12 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.45, delay: 0.1 }}
+            className="flex flex-wrap items-center gap-1.5"
           >
-            All
-          </button>
-          {subcategories.map((sc) => (
+            {/* ALL WORK pill */}
             <button
-              key={sc}
               onClick={() => {
-                setSelectedSubcategory(sc);
-                if (sc) router.push(`?sc=${sc}`, { scroll: false });
+                setSelectedSubcategory(null);
+                router.push(pathname, { scroll: false });
               }}
-              className={`px-3.5 py-1 font-mono text-[10px] uppercase tracking-wider rounded transition-all duration-300 ${
-                selectedSubcategory === sc
-                  ? "bg-emerald-400/15 text-emerald-300 border border-emerald-400/45 shadow-[0_0_10px_rgba(52,211,153,0.18)]"
-                  : "border border-white/[0.08] text-gray-500 hover:border-emerald-400/35 hover:text-emerald-400"
+              className={`px-3.5 py-1.5 rounded-full font-mono text-[10px] uppercase tracking-wider
+                transition-all duration-300 ${
+                selectedSubcategory === null
+                  ? "bg-emerald-400 text-black font-bold shadow-[0_0_14px_rgba(52,211,153,0.45)]"
+                  : "bg-white/[0.05] border border-white/[0.08] text-white/50 hover:text-white hover:border-white/20"
               }`}
             >
-              {sc}
+              All Work
             </button>
-          ))}
-        </motion.nav>
 
-        {/* ── Bento Grid — tighter row height ── */}
+            {subcategories.map((sc) => (
+              <button
+                key={sc}
+                onClick={() => {
+                  setSelectedSubcategory(sc);
+                  if (sc) router.push(`?sc=${sc}`, { scroll: false });
+                }}
+                className={`px-3.5 py-1.5 rounded-full font-mono text-[10px] uppercase tracking-wider
+                  transition-all duration-300 ${
+                  selectedSubcategory === sc
+                    ? "bg-emerald-400 text-black font-bold shadow-[0_0_14px_rgba(52,211,153,0.45)]"
+                    : "bg-white/[0.05] border border-white/[0.08] text-white/50 hover:text-white hover:border-white/20"
+                }`}
+              >
+                {sc}
+              </button>
+            ))}
+          </motion.nav>
+        </motion.div>
+
+        {/* ── Bento Grid ── */}
         <motion.div
           layout
-          className="grid grid-cols-12 auto-rows-[160px] sm:auto-rows-[178px] gap-2.5"
+          className="grid grid-cols-12 auto-rows-[170px] sm:auto-rows-[190px] gap-2.5"
         >
           <AnimatePresence mode="popLayout">
             {filteredProjects.map((project, idx) => (
@@ -321,16 +259,17 @@ export default function ProjectsGrid({
             ))}
           </AnimatePresence>
 
+          {/* Empty state */}
           {filteredProjects.length === 0 && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="col-span-12 flex flex-col items-center justify-center py-20 gap-3"
+              className="col-span-12 flex flex-col items-center justify-center py-24 gap-3"
             >
-              <div className="w-12 h-12 rounded-full border border-emerald-400/20 flex items-center justify-center">
-                <span className="text-lg text-emerald-400/30">∅</span>
+              <div className="w-10 h-10 rounded-full border border-emerald-400/20 flex items-center justify-center">
+                <span className="text-base text-emerald-400/30">∅</span>
               </div>
-              <p className="font-mono text-[10px] text-gray-600 uppercase tracking-widest">
+              <p className="font-mono text-[9px] text-white/20 uppercase tracking-widest">
                 No projects in this category
               </p>
             </motion.div>
