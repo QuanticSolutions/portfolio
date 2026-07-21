@@ -2,24 +2,38 @@
 import React, { useState, useMemo } from "react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 
-function Card({ project }) {
+/* Split a project array into pairs, so each row
+   gets exactly one "small" and one "large" card. */
+function chunkPairs(items) {
+  const pairs = [];
+  for (let i = 0; i < items.length; i += 2) {
+    pairs.push(items.slice(i, i + 2));
+  }
+  return pairs;
+}
+
+function Card({ project, widthClass }) {
+  const hasName = Boolean(project.title && project.title.trim());
+  const hasSubtext = Boolean(project.category || project.subcategory);
+
   return (
     <a
       href={project.link ?? "#"}
       target={project.link ? "_blank" : undefined}
       rel="noopener noreferrer"
-      className="group relative block overflow-hidden rounded-2xl
+      className={`group relative block overflow-hidden rounded-2xl
         border border-white/[0.06] bg-white/[0.03]
         hover:border-emerald-400/70
         transition-all duration-500
-        hover:shadow-[0_0_0_1px_rgba(52,211,153,0.6),0_0_30px_rgba(52,211,153,0.15),0_0_60px_rgba(52,211,153,0.07)]"
+        hover:shadow-[0_0_0_1px_rgba(52,211,153,0.6),0_0_30px_rgba(52,211,153,0.15),0_0_60px_rgba(52,211,153,0.07)]
+        ${widthClass}`}
     >
       <div className="relative">
         <img
           src={project.image}
-          alt={project.title}
+          alt={project.title || "Project image"}
           loading="lazy"
-          className="block h-80 w-auto
+          className="block w-full h-auto
             transition-transform duration-700 ease-out
             group-hover:scale-[1.05]"
         />
@@ -47,16 +61,22 @@ function Card({ project }) {
           →
         </div>
 
-        {/* Name / category — fades and slides up on hover */}
-        <div className="absolute inset-x-0 bottom-0 p-5
-          translate-y-4 opacity-0
-          group-hover:translate-y-0 group-hover:opacity-100
-          transition-all duration-500">
-          <h3 className="font-bold text-lg text-emerald-300">{project.title}</h3>
-          <p className="text-xs font-bold uppercase tracking-[0.25em] text-emerald-300/70 mt-1">
-            {project.category}{project.subcategory ? ` / ${project.subcategory}` : ""}
-          </p>
-        </div>
+        {/* Name / category — only rendered if there's something to show, fades and slides up on hover */}
+        {(hasName || hasSubtext) && (
+          <div className="absolute inset-x-0 bottom-0 p-5
+            translate-y-4 opacity-0
+            group-hover:translate-y-0 group-hover:opacity-100
+            transition-all duration-500">
+            {hasName && (
+              <h3 className="font-bold text-lg text-emerald-300">{project.title}</h3>
+            )}
+            {hasSubtext && (
+              <p className="text-xs font-bold uppercase tracking-[0.25em] text-emerald-300/70 mt-1">
+                {project.category}{project.subcategory ? ` / ${project.subcategory}` : ""}
+              </p>
+            )}
+          </div>
+        )}
       </div>
     </a>
   );
@@ -84,6 +104,7 @@ export default function ProjectsGrid({
   );
 
   const filters = ["All Work", ...subcategories];
+  const pairs = useMemo(() => chunkPairs(filtered), [filtered]);
 
   return (
     <section className="relative px-6 sm:px-10 md:px-16 lg:px-24 xl:px-32 pt-28 pb-24 min-h-screen bg-[#050505]">
@@ -135,11 +156,23 @@ export default function ProjectsGrid({
           </div>
         </div>
 
-        {/* ── Equal-height, natural-width gallery — same pattern as glitchX ── */}
-        <div className="flex flex-wrap justify-center gap-3">
-          {filtered.map((project) => (
-            <Card key={project.id} project={project} />
-          ))}
+        {/* ── Alternating small/large pairs, same height, natural width ── */}
+        <div className="flex flex-col gap-6">
+          {pairs.map((pair, pairIdx) => {
+            const firstIsLarge = pairIdx % 2 === 1;
+            return (
+              <div key={pairIdx} className="flex flex-col sm:flex-row gap-6 justify-center">
+                {pair.map((project, posIdx) => {
+                  const isFirst = posIdx === 0;
+                  const isLarge = isFirst ? firstIsLarge : !firstIsLarge;
+                  const widthClass = isLarge ? "sm:w-[58%]" : "sm:w-[38%]";
+                  return (
+                    <Card key={project.id} project={project} widthClass={widthClass} />
+                  );
+                })}
+              </div>
+            );
+          })}
 
           {filtered.length === 0 && (
             <div className="w-full flex flex-col items-center justify-center py-24 gap-3">
