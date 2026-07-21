@@ -87,7 +87,7 @@ function getCorporateProjects() {
     for (const file of files) {
       projects.push({
         id: id++,
-        title: "Antenna Now",
+        title: "",
         category: "Corporate",
         subcategory: label,
         image: `/assets/projects/corporate/${folder}/${file}`,
