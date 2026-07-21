@@ -1,82 +1,7 @@
 "use client";
 import React, { useState, useMemo, useEffect } from "react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
-
-function Card({ project, isLarge }) {
-  const hasName = Boolean(project.title && project.title.trim());
-  const hasSubtext = Boolean(project.category || project.subcategory);
-
-  return (
-    <a
-      href={project.link ?? "#"}
-      target={project.link ? "_blank" : undefined}
-      rel="noopener noreferrer"
-      /* 
-         Removed flex-grow so orphan/last cards maintain their assigned width instead of stretching!
-         - Mobile: w-full
-         - Desktop Large: exactly 62% minus half the gap (12px)
-         - Desktop Small: exactly 38% minus half the gap (12px)
-      */
-      className={`group relative block w-full rounded-2xl overflow-hidden
-        border border-white/[0.06] bg-white/[0.03]
-        hover:border-emerald-400/70
-        transition-all duration-500
-        hover:shadow-[0_0_0_1px_rgba(52,211,153,0.6),0_0_30px_rgba(52,211,153,0.15),0_0_60px_rgba(52,211,153,0.07)]
-        ${
-          isLarge
-            ? "sm:w-[calc(62%-12px)]"
-            : "sm:w-[calc(38%-12px)]"
-        }`}
-    >
-      <div className="relative h-64 sm:h-96 w-full">
-        <img
-          src={project.image}
-          alt={project.title || project.subcategory || "Project image"}
-          loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover
-            transition-transform duration-700 ease-out
-            group-hover:scale-[1.05]"
-        />
-
-        <div className="absolute inset-0 bg-gradient-to-t
-          from-black/90 via-emerald-950/40 to-transparent
-          opacity-0 group-hover:opacity-100
-          transition-opacity duration-500" />
-
-        <div className="absolute bottom-0 left-0 right-0 h-[1px]
-          bg-gradient-to-r from-transparent via-emerald-400 to-transparent
-          opacity-0 group-hover:opacity-100
-          scale-x-0 group-hover:scale-x-100
-          transition-all duration-700 ease-out origin-center" />
-
-        <div className="absolute top-5 right-5 size-10 rounded-full
-          bg-white/[0.06] border border-white/[0.08] text-white/60
-          grid place-items-center
-          opacity-0 group-hover:opacity-100
-          group-hover:bg-emerald-400 group-hover:border-emerald-400 group-hover:text-black
-          transition-all duration-500">
-          →
-        </div>
-
-        {(hasName || hasSubtext) && (
-          <div className="absolute inset-x-0 bottom-0 p-5
-            translate-y-4 opacity-0
-            group-hover:translate-y-0 group-hover:opacity-100
-            transition-all duration-500">
-            {hasName && (
-              <h3 className="font-bold text-lg text-emerald-300">{project.title}</h3>
-            )}
-            {hasSubtext && (
-              <p className="text-xs font-bold uppercase tracking-[0.25em] text-emerald-300/70 mt-1">
-                {project.category}{project.subcategory ? ` / ${project.subcategory}` : ""}
-              </p>
-            )}
-          </div>
-        )}
-      </div>
-    </a>
-  );
-}
+import { ArrowUpRight } from "lucide-react";
 
 export default function ProjectsGrid({
   projects      = [],
@@ -115,9 +40,9 @@ export default function ProjectsGrid({
         {/* ── Header ── */}
         <div className="flex flex-wrap items-end justify-between gap-6 mb-12">
           <div>
-            <h2 className="mt-3 text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight leading-none">
+            <h2 className="mt-3 font-display text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight leading-none">
               <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-green-400 bg-clip-text text-transparent">
-                {category}
+                {category || "Archive"}
               </span>
             </h2>
           </div>
@@ -153,16 +78,39 @@ export default function ProjectsGrid({
           </div>
         </div>
 
-        {/* ── Alternating Width Flex Grid (justify-start prevents odd spacing) ── */}
-        <div className="flex flex-wrap gap-6 justify-start">
-          {filtered.map((project, index) => {
-            const patternIndex = index % 4;
-            const isLarge = patternIndex === 0 || patternIndex === 3;
-
-            return (
-              <Card key={project.id} project={project} isLarge={isLarge} />
-            );
-          })}
+        {/* ── Grid, ported 1:1 from the working portfolio page ── */}
+        <div className="flex flex-wrap justify-center gap-3">
+          {filtered.map((p) => (
+            <a key={p.id || p.image} href={p.link ?? "#"} className="group block">
+              <div className="relative rounded-3xl overflow-hidden border border-white/10 bg-white/5">
+                <img
+                  src={p.image}
+                  alt={p.title || p.subcategory || "Project image"}
+                  loading="lazy"
+                  className="block h-72 w-auto transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="absolute top-5 right-5 size-10 rounded-full bg-white/15 backdrop-blur grid place-items-center text-emerald-400 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                  <ArrowUpRight className="size-4" />
+                </div>
+                <div className="absolute inset-x-0 bottom-0 p-5 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                  {(p.title) && (
+                    <h3 className="font-display text-xl font-bold text-emerald-300">
+                      {p.title}
+                    </h3>
+                  )}
+                  <div className="flex items-end justify-between mt-1">
+                    <p className="text-xs font-bold uppercase tracking-[0.25em] text-emerald-300/80">
+                      {p.subcategory || p.category}
+                    </p>
+                    <span className="text-emerald-400 font-bold text-sm group-hover:underline">
+                      View Case
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </a>
+          ))}
 
           {filtered.length === 0 && (
             <div className="w-full flex flex-col items-center justify-center py-24 gap-3">
