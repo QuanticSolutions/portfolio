@@ -5,8 +5,6 @@ import { Suspense } from "react";
 
 /* ─────────────────────────────────────────────
    Map raw folder names → display labels.
-   Add an entry here any time a folder name
-   shouldn't just be auto Title-Cased.
 ───────────────────────────────────────────── */
 const SUBCATEGORY_LABELS = {
   banners: "Banners",
@@ -52,9 +50,30 @@ function interleaveBySubcategory(projects, order) {
   return result;
 }
 
+/**
+ * Helper function to recursively retrieve all image files inside a folder.
+ */
+function getAllImageFilesRecursively(dir) {
+  let results = [];
+  try {
+    const list = fs.readdirSync(dir, { withFileTypes: true });
+    for (const entry of list) {
+      const fullPath = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        results = results.concat(getAllImageFilesRecursively(fullPath));
+      } else if (entry.isFile() && IMAGE_EXTENSIONS.has(path.extname(entry.name).toLowerCase())) {
+        results.push(fullPath);
+      }
+    }
+  } catch (err) {
+    console.error(`Error reading directory ${dir}:`, err);
+  }
+  return results;
+}
+
 /* ─────────────────────────────────────────────
-   Reads every subfolder inside /public/assets/projects/corporate
-   and every image inside each — fully automatic, no manual entries.
+   Reads every subfolder and deeply traverses 
+   all sub-files automatically.
 ───────────────────────────────────────────── */
 function getCorporateProjects() {
   const baseDir = path.join(process.cwd(), "public", "assets", "projects", "corporate");
@@ -79,18 +98,22 @@ function getCorporateProjects() {
     subcategories.push(label);
 
     const folderPath = path.join(baseDir, folder);
-    const files = fs
-      .readdirSync(folderPath)
-      .filter((file) => IMAGE_EXTENSIONS.has(path.extname(file).toLowerCase()))
-      .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+    
+    // Get all image file absolute paths recursively
+    const absoluteFiles = getAllImageFilesRecursively(folderPath).sort((a, b) =>
+      path.basename(a).localeCompare(path.basename(b), undefined, { numeric: true })
+    );
 
-    for (const file of files) {
+    for (const filePath of absoluteFiles) {
+      // Calculate path relative to /public to serve static assets correctly in Next.js
+      const relativePath = path.relative(path.join(process.cwd(), "public"), filePath).replace(/\\/g, "/");
+
       projects.push({
         id: id++,
         title: "",
         category: "Corporate",
         subcategory: label,
-        image: `/assets/projects/corporate/${folder}/${file}`,
+        image: `/${relativePath}`,
       });
     }
   }
