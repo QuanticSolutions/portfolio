@@ -14,14 +14,14 @@ function Card({ project, widthClass }) {
         hover:shadow-[0_0_0_1px_rgba(52,211,153,0.6),0_0_30px_rgba(52,211,153,0.15),0_0_60px_rgba(52,211,153,0.07)]
         ${widthClass}`}
     >
-      <div className="relative h-64 sm:h-80">
+      <div className="relative w-full h-full min-h-[16rem] sm:min-h-[20rem]">
         <img
           src={project.image}
           alt={project.title || "Project image"}
           loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover
-            transition-transform duration-700 ease-out
-            group-hover:scale-[1.05]"
+          className="absolute inset-0 w-full h-full object-cover object-center
+          transition-transform duration-700 ease-out
+          group-hover:scale-[1.05]"
         />
 
         <div className="absolute inset-0 bg-gradient-to-t
