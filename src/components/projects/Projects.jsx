@@ -120,7 +120,7 @@ export default function ProjectsGrid({
         </div>
 
         {/* ── Natural-size gallery, equal height, centered ── */}
-        <div className="flex flex-wrap justify-center gap-3">
+        <div className="flex flex-wrap justify-center gap-6">
           {filtered.map((project) => (
             <Card key={project.id} project={project} />
           ))}
