@@ -11,10 +11,10 @@ export function InfiniteMovingCardsDemo() {
 // Replace testimonials with test images
 const testImages = [
   {
-    src: "/assets/projects/web/Shopify/2.jpg",
+    src: "wordpress/Fintalk.jpg",
     alt: "Test Image 1",
-    name: "Bechlo",
-    link: "https://bechlo.pk/"
+    name: "Fintalk",
+    link: "#"
   },
   {
     src: "/assets/projects/web/Shopify/1.jpg",
