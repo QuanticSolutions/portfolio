@@ -145,7 +145,7 @@ const TechStackHeroSection = () => {
           >
             <img
               alt="App screenshot"
-              src="/assets/UI-Portfolio/Web/Custom/CarFinderpro.jpg"
+              src="/UI-Portfolio/Web/Custom/CarFinderpro.jpg"
               className="max-w-full h-auto rounded-md bg-white/5 ring-1 ring-white/10 shadow-xl"
             />
           </motion.div>
