@@ -47,9 +47,9 @@ var projects = [
 
     // Book Covers (10 items - Even)
     { id: 7, image: "/assets/projects/GFx-BookCover_01.png", title: "Book Covers 01", category: "Graphic Design", subcategory: "Book Covers", link: "#" },
-    { id: 9, image: "/assets/projects/GFx-BookCover_03.png", title: "Book Covers 03", category: "Graphic Design", subcategory: "Book Covers", link: "#" },
     { id: 8, image: "/assets/projects/GFx-BookCover_02.png", title: "Book Covers 02", category: "Graphic Design", subcategory: "Book Covers", link: "#" },
     { id: 10, image: "/assets/projects/GFx-BookCover_04.png", title: "Book Covers 04", category: "Graphic Design", subcategory: "Book Covers", link: "#" },
+    { id: 9, image: "/assets/projects/GFx-BookCover_03.png", title: "Book Covers 03", category: "Graphic Design", subcategory: "Book Covers", link: "#" },
     { id: 11, image: "/assets/projects/GFx-BookCover_05.png", title: "Book Covers 05", category: "Graphic Design", subcategory: "Book Covers", link: "#" },
     { id: 13, image: "/assets/projects/GFx-BookCover_07.png", title: "Book Covers 07", category: "Graphic Design", subcategory: "Book Covers", link: "#" },
     { id: 12, image: "/assets/projects/GFx-BookCover_06.png", title: "Book Covers 06", category: "Graphic Design", subcategory: "Book Covers", link: "#" },
@@ -60,16 +60,16 @@ var projects = [
     // Business Cards (6 items - Even)
     { id: 17, image: "/assets/projects/GFx-BusinessCard_01.png", title: "Business Cards 01", category: "Graphic Design", subcategory: "Business Cards", link: "#" },
     { id: 18, image: "/assets/projects/GFx-BusinessCard_02.png", title: "Business Cards 02", category: "Graphic Design", subcategory: "Business Cards", link: "#" },
+    { id: 20, image: "/assets/projects/GFx-BusinessCard_04.png", title: "Business Cards 04", category: "Graphic Design", subcategory: "Business Cards", link: "#" },
     { id: 19, image: "/assets/projects/GFx-BusinessCard_03.png", title: "Business Cards 03", category: "Graphic Design", subcategory: "Business Cards", link: "#" },
     { id: 21, image: "/assets/projects/GFx-BusinessCard_05.png", title: "Business Cards 05", category: "Graphic Design", subcategory: "Business Cards", link: "#" },
-    { id: 20, image: "/assets/projects/GFx-BusinessCard_04.png", title: "Business Cards 04", category: "Graphic Design", subcategory: "Business Cards", link: "#" },
     { id: 22, image: "/assets/projects/GFx-BusinessCard_06.png", title: "Business Cards 06", category: "Graphic Design", subcategory: "Business Cards", link: "#" },
 
     // Flyers (10 items - Even)
     { id: 23, image: "/assets/projects/GFx-Flyer_01.png", title: "Flyers 01", category: "Graphic Design", subcategory: "Flyers", link: "#" },
-    { id: 25, image: "/assets/projects/GFx-Flyer_03.png", title: "Flyers 03", category: "Graphic Design", subcategory: "Flyers", link: "#" },
     { id: 24, image: "/assets/projects/GFx-Flyer_02.png", title: "Flyers 02", category: "Graphic Design", subcategory: "Flyers", link: "#" },
     { id: 26, image: "/assets/projects/GFx-Flyer_04.png", title: "Flyers 04", category: "Graphic Design", subcategory: "Flyers", link: "#" },
+    { id: 25, image: "/assets/projects/GFx-Flyer_03.png", title: "Flyers 03", category: "Graphic Design", subcategory: "Flyers", link: "#" },
     { id: 27, image: "/assets/projects/GFx-Flyer_05.png", title: "Flyers 05", category: "Graphic Design", subcategory: "Flyers", link: "#" },
     { id: 29, image: "/assets/projects/GFx-Flyer_07.png", title: "Flyers 07", category: "Graphic Design", subcategory: "Flyers", link: "#" },
     { id: 28, image: "/assets/projects/GFx-Flyer_06.png", title: "Flyers 06", category: "Graphic Design", subcategory: "Flyers", link: "#" },
@@ -94,19 +94,19 @@ var projects = [
     // Jersey Design (8 items - Even)
     { id: 45, image: "/assets/projects/GFx-Jersey_01.png", title: "Jersey Design 01", category: "Graphic Design", subcategory: "Jersey Design", link: "#" },
     { id: 46, image: "/assets/projects/GFx-Jersey_02.png", title: "Jersey Design 02", category: "Graphic Design", subcategory: "Jersey Design", link: "#" },
+    { id: 52, image: "/assets/projects/GFx-Jersey_08.png", title: "Jersey Design 08", category: "Graphic Design", subcategory: "Jersey Design", link: "#" },
     { id: 47, image: "/assets/projects/GFx-Jersey_03.png", title: "Jersey Design 03", category: "Graphic Design", subcategory: "Jersey Design", link: "#" },
     { id: 49, image: "/assets/projects/GFx-Jersey_05.png", title: "Jersey Design 05", category: "Graphic Design", subcategory: "Jersey Design", link: "#" },
     { id: 48, image: "/assets/projects/GFx-Jersey_04.png", title: "Jersey Design 04", category: "Graphic Design", subcategory: "Jersey Design", link: "#" },
     { id: 50, image: "/assets/projects/GFx-Jersey_06.png", title: "Jersey Design 06", category: "Graphic Design", subcategory: "Jersey Design", link: "#" },
     { id: 51, image: "/assets/projects/GFx-Jersey_07.png", title: "Jersey Design 07", category: "Graphic Design", subcategory: "Jersey Design", link: "#" },
-    { id: 52, image: "/assets/projects/GFx-Jersey_08.png", title: "Jersey Design 08", category: "Graphic Design", subcategory: "Jersey Design", link: "#" },
 
     // Logo (12 items - Even)
     { id: 53, image: "/assets/projects/GFx-LOGO_01.png", title: "Logo 01", category: "Graphic Design", subcategory: "Logo", link: "#" },
     { id: 54, image: "/assets/projects/GFx-LOGO_02.png", title: "Logo 02", category: "Graphic Design", subcategory: "Logo", link: "#" },
+    { id: 56, image: "/assets/projects/GFx-LOGO_04.png", title: "Logo 04", category: "Graphic Design", subcategory: "Logo", link: "#" },
     { id: 55, image: "/assets/projects/GFx-LOGO_03.png", title: "Logo 03", category: "Graphic Design", subcategory: "Logo", link: "#" },
     { id: 57, image: "/assets/projects/GFx-LOGO_05.png", title: "Logo 05", category: "Graphic Design", subcategory: "Logo", link: "#" },
-    { id: 56, image: "/assets/projects/GFx-LOGO_04.png", title: "Logo 04", category: "Graphic Design", subcategory: "Logo", link: "#" },
     { id: 58, image: "/assets/projects/GFx-LOGO_06.png", title: "Logo 06", category: "Graphic Design", subcategory: "Logo", link: "#" },
     { id: 59, image: "/assets/projects/GFx-LOGO_07.png", title: "Logo 07", category: "Graphic Design", subcategory: "Logo", link: "#" },
     { id: 61, image: "/assets/projects/GFx-LOGO_09.png", title: "Logo 09", category: "Graphic Design", subcategory: "Logo", link: "#" },
@@ -118,31 +118,31 @@ var projects = [
     // Menu (4 items - Even)
     { id: 65, image: "/assets/projects/GFx-Menu_01.png", title: "Menu 01", category: "Graphic Design", subcategory: "Menu", link: "#" },
     { id: 66, image: "/assets/projects/GFx-Menu_02.png", title: "Menu 02", category: "Graphic Design", subcategory: "Menu", link: "#" },
-    { id: 67, image: "/assets/projects/GFx-Menu_03.png", title: "Menu 03", category: "Graphic Design", subcategory: "Menu", link: "#" },
     { id: 68, image: "/assets/projects/GFx-Menu_04.png", title: "Menu 04", category: "Graphic Design", subcategory: "Menu", link: "#" },
+    { id: 67, image: "/assets/projects/GFx-Menu_03.png", title: "Menu 03", category: "Graphic Design", subcategory: "Menu", link: "#" },
 
     // Packaging (6 items - Even)
     { id: 69, image: "/assets/projects/GFx-Packaging_01.png", title: "Packaging 01", category: "Graphic Design", subcategory: "Packaging", link: "#" },
     { id: 70, image: "/assets/projects/GFx-Packaging_02.png", title: "Packaging 02", category: "Graphic Design", subcategory: "Packaging", link: "#" },
+    { id: 72, image: "/assets/projects/GFx-Packaging_04.png", title: "Packaging 04", category: "Graphic Design", subcategory: "Packaging", link: "#" },
     { id: 71, image: "/assets/projects/GFx-Packaging_03.png", title: "Packaging 03", category: "Graphic Design", subcategory: "Packaging", link: "#" },
     { id: 73, image: "/assets/projects/GFx-Packaging_05.png", title: "Packaging 05", category: "Graphic Design", subcategory: "Packaging", link: "#" },
-    { id: 72, image: "/assets/projects/GFx-Packaging_04.png", title: "Packaging 04", category: "Graphic Design", subcategory: "Packaging", link: "#" },
     { id: 74, image: "/assets/projects/GFx-Packaging_06.png", title: "Packaging 06", category: "Graphic Design", subcategory: "Packaging", link: "#" },
 
     // Posts (6 items - Even)
     { id: 75, image: "/assets/projects/GFx-Posts_01.png", title: "Posts 01", category: "Graphic Design", subcategory: "Posts", link: "#" },
-    { id: 77, image: "/assets/projects/GFx-Posts_03.png", title: "Posts 03", category: "Graphic Design", subcategory: "Posts", link: "#" },
     { id: 76, image: "/assets/projects/GFx-Posts_02.png", title: "Posts 02", category: "Graphic Design", subcategory: "Posts", link: "#" },
     { id: 78, image: "/assets/projects/GFx-Posts_04.png", title: "Posts 04", category: "Graphic Design", subcategory: "Posts", link: "#" },
+    { id: 77, image: "/assets/projects/GFx-Posts_03.png", title: "Posts 03", category: "Graphic Design", subcategory: "Posts", link: "#" },
     { id: 79, image: "/assets/projects/GFx-Posts_05.png", title: "Posts 05", category: "Graphic Design", subcategory: "Posts", link: "#" },
     { id: 80, image: "/assets/projects/GFx-Posts_06.png", title: "Posts 06", category: "Graphic Design", subcategory: "Posts", link: "#" },
 
     // Standees (6 items - Even)
     { id: 81, image: "/assets/projects/GFx-Standeee_01.png", title: "Standees 01", category: "Graphic Design", subcategory: "Standees", link: "#" },
     { id: 82, image: "/assets/projects/GFx-Standeee_02.png", title: "Standees 02", category: "Graphic Design", subcategory: "Standees", link: "#" },
+    { id: 84, image: "/assets/projects/GFx-Standeee_04.png", title: "Standees 04", category: "Graphic Design", subcategory: "Standees", link: "#" },
     { id: 83, image: "/assets/projects/GFx-Standeee_03.png", title: "Standees 03", category: "Graphic Design", subcategory: "Standees", link: "#" },
     { id: 85, image: "/assets/projects/GFx-Standeee_05.png", title: "Standees 05", category: "Graphic Design", subcategory: "Standees", link: "#" },
-    { id: 84, image: "/assets/projects/GFx-Standeee_04.png", title: "Standees 04", category: "Graphic Design", subcategory: "Standees", link: "#" },
     { id: 86, image: "/assets/projects/GFx-Standeee_06.png", title: "Standees 06", category: "Graphic Design", subcategory: "Standees", link: "#" },
 
     // Thumbnails (2 items - Even)
