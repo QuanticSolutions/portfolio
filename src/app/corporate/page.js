@@ -85,9 +85,9 @@ var projects = [
     { id: 38, image: "/assets/projects/GFx-Interior_06.png", title: "Interior Designs 06", category: "Graphic Design", subcategory: "Interior Designs", link: "#" },
     { id: 37, image: "/assets/projects/GFx-Interior_05.png", title: "Interior Designs 05", category: "Graphic Design", subcategory: "Interior Designs", link: "#" },
     { id: 39, image: "/assets/projects/GFx-Interior_07.png", title: "Interior Designs 07", category: "Graphic Design", subcategory: "Interior Designs", link: "#" },
-    { id: 41, image: "/assets/projects/GFx-Interior_09.png", title: "Interior Designs 09", category: "Graphic Design", subcategory: "Interior Designs", link: "#" },
     { id: 40, image: "/assets/projects/GFx-Interior_08.png", title: "Interior Designs 08", category: "Graphic Design", subcategory: "Interior Designs", link: "#" },
     { id: 42, image: "/assets/projects/GFx-Interior_10.png", title: "Interior Designs 10", category: "Graphic Design", subcategory: "Interior Designs", link: "#" },
+    { id: 41, image: "/assets/projects/GFx-Interior_09.png", title: "Interior Designs 09", category: "Graphic Design", subcategory: "Interior Designs", link: "#" },
     { id: 43, image: "/assets/projects/GFx-Interior_11.png", title: "Interior Designs 11", category: "Graphic Design", subcategory: "Interior Designs", link: "#" },
     { id: 44, image: "/assets/projects/GFx-Interior_12.png", title: "Interior Designs 12", category: "Graphic Design", subcategory: "Interior Designs", link: "#" },
 
