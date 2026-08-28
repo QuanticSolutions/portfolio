@@ -44,13 +44,6 @@ function interleaveBySubcategory(projects, order) {
 export default function GamingPage() {
 
 var projects = [
-    // Banners (4 items - Even)
-    { id: 1, image: "/assets/projects/GFx-Banner_01.png", title: "Banners 01", category: "Graphic Design", subcategory: "Banners", link: "#" },
-    { id: 2, image: "/assets/projects/GFx-Banner_02.png", title: "Banners 02", category: "Graphic Design", subcategory: "Banners", link: "#" },
-    { id: 4, image: "/assets/projects/GFx-Banner_04.png", title: "Banners 04", category: "Graphic Design", subcategory: "Banners", link: "#" },
-    { id: 3, image: "/assets/projects/GFx-Banner_03.png", title: "Banners 03", category: "Graphic Design", subcategory: "Banners", link: "#" },
-    // { id: 5, image: "/assets/projects/GFx-Banner_05.png", title: "Banners 05", category: "Graphic Design", subcategory: "Banners", link: "#" },
-    // { id: 6, image: "/assets/projects/GFx-Banner_06.png", title: "Banners 06", category: "Graphic Design", subcategory: "Banners", link: "#" },
 
     // Book Covers (10 items - Even)
     { id: 7, image: "/assets/projects/GFx-BookCover_01.png", title: "Book Covers 01", category: "Graphic Design", subcategory: "Book Covers", link: "#" },
@@ -159,7 +152,6 @@ var projects = [
 
   const webSubcategories = [
     "Logo",
-    "Banners",
     "Book Covers",
     "Thumbnails",
     "Business Cards",
