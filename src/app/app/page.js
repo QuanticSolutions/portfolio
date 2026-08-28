@@ -79,7 +79,7 @@ export default function AppDevelopmentPage() {
     // { id: 34, title: "UI/UX 24", subtitle: "Short tag", category: "App Development", subcategory: "UI/UX", description: "Short description", bgGradient: "from-teal-900 via-black to-teal-900", textColor: "text-emerald-400", accentColor: "emerald-400", icon: null, svgPattern: "circuit", image: "/assets/projects/app/UI_24.png", isCenter: false },
   ];
 
-  const webSubcategories = ["Mobile App", "UI/UX"];
+  const webSubcategories = [];
 
   // projects = interleaveBySubcategory(projects, webSubcategories);
 
