@@ -33,7 +33,7 @@ export function Nav() {
       name: "Portfolio",
       children: [
         { name: "Designing", link: "/corporate" },
-        { name: "UI/UX", link: "/uix" },
+        { name: "UI/UX", link: "/ui" },
         { name: "Web Dev", link: "/web" },
         { name: "App Dev", link: "/app" },
       ],
