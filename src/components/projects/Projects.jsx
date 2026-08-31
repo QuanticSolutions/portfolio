@@ -14,7 +14,7 @@ function Card({ project }) {
   const mobileImage = toMobileSrc(project.image);
 
   return (
-    
+    <a
       href={project.link ?? "#"}
       target={project.link ? "_blank" : undefined}
       rel="noopener noreferrer"
