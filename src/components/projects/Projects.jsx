@@ -2,24 +2,34 @@
 import React, { useState, useMemo } from "react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 
+// Converts ".../<any-folder>/filename.png" -> ".../mobile_portfolio/filename.png"
+function toMobileSrc(image) {
+  if (!image) return image;
+  return image.replace(/\/[^/]+\/([^/]+)$/, "/mobile_portfolio/$1");
+}
+
 function Card({ project }) {
   const hasName = Boolean(project.title && project.title.trim());
   const hasSubtext = Boolean(project.category || project.subcategory);
+  const mobileImage = toMobileSrc(project.image);
 
   return (
-    <a
+    
       href={project.link ?? "#"}
       target={project.link ? "_blank" : undefined}
       rel="noopener noreferrer"
       className="group block"
     >
       <div className="relative rounded-3xl overflow-hidden border border-white/[0.06] bg-white/[0.03]">
-        <img
-          src={project.image}
-          alt={project.title || "Project image"}
-          loading="lazy"
-          className="block h-72 w-auto transition-transform duration-700 group-hover:scale-105"
-        />
+        <picture>
+          <source media="(max-width: 1024px)" srcSet={mobileImage} />
+          <img
+            src={project.image}
+            alt={project.title || "Project image"}
+            loading="lazy"
+            className="block h-72 w-auto transition-transform duration-700 group-hover:scale-105"
+          />
+        </picture>
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-emerald-950/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         <div className="absolute top-5 right-5 size-10 rounded-full bg-white/15 backdrop-blur grid place-items-center text-emerald-300 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
           →
