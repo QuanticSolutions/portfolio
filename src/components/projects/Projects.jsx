@@ -14,11 +14,11 @@ function Card({ project }) {
   const mobileImage = toMobileSrc(project.image);
 
   return (
-    <a
+    
       href={project.link ?? "#"}
       target={project.link ? "_blank" : undefined}
       rel="noopener noreferrer"
-      className="group block"
+      className="group block w-full lg:w-auto"
     >
       <div className="relative rounded-3xl overflow-hidden border border-white/[0.06] bg-white/[0.03]">
         <picture>
@@ -27,7 +27,7 @@ function Card({ project }) {
             src={project.image}
             alt={project.title || "Project image"}
             loading="lazy"
-            className="block h-72 w-auto transition-transform duration-700 group-hover:scale-105"
+            className="block w-full h-44 sm:h-64 lg:h-72 lg:w-auto object-cover lg:object-contain transition-transform duration-700 group-hover:scale-105"
           />
         </picture>
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-emerald-950/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -129,14 +129,14 @@ export default function ProjectsGrid({
           </div>
         </div>
 
-        {/* ── Natural-size gallery, equal height, centered ── */}
-        <div className="flex flex-wrap justify-center gap-6">
+        {/* ── Grid on mobile/tablet, natural-size flex on desktop ── */}
+        <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:flex lg:flex-wrap lg:justify-center">
           {filtered.map((project) => (
             <Card key={project.id} project={project} />
           ))}
 
           {filtered.length === 0 && (
-            <div className="w-full flex flex-col items-center justify-center py-24 gap-3">
+            <div className="col-span-2 lg:w-full flex flex-col items-center justify-center py-24 gap-3">
               <div className="w-10 h-10 rounded-full border border-emerald-400/20 flex items-center justify-center">
                 <span className="text-base text-emerald-400/30">∅</span>
               </div>
