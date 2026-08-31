@@ -15,8 +15,8 @@ function Card({ project }) {
 
   return (
     
-      href={project.link ?? "#"}
-      target={project.link ? "_blank" : undefined}
+      href="#"
+      target="_blank"
       rel="noopener noreferrer"
       className="group block"
     >
