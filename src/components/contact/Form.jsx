@@ -1,14 +1,23 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { twMerge } from "tailwind-merge";
-import { Textarea } from "../ui/textarea"; // Make sure this component exists
+import { Textarea } from "../ui/textarea";
+import { CountrySelect } from "./CountrySelect";
+import { PhoneInput } from "./PhoneInput";
 
 export function ContactForm() {
+  const [country, setCountry] = useState("PK");
+  const [dialCode, setDialCode] = useState("+92");
+  const [phoneNumber, setPhoneNumber] = useState("");
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Contact form submitted");
+    console.log("Contact form submitted", {
+      country,
+      phone: `${dialCode} ${phoneNumber}`,
+    });
   };
 
   return (
@@ -24,14 +33,32 @@ export function ContactForm() {
           <Label htmlFor="name">Name</Label>
           <Input id="name" placeholder="John Doe" type="text" />
         </LabelInputContainer>
+
         <LabelInputContainer className="mb-4">
           <Label htmlFor="email">Email Address</Label>
           <Input id="email" placeholder="you@example.com" type="email" />
         </LabelInputContainer>
+
+        <LabelInputContainer className="mb-4">
+          <Label htmlFor="country">Country</Label>
+          <CountrySelect value={country} onChange={setCountry} />
+        </LabelInputContainer>
+
+        <LabelInputContainer className="mb-4">
+          <Label htmlFor="phone">Phone Number</Label>
+          <PhoneInput
+            dialCode={dialCode}
+            onDialCodeChange={setDialCode}
+            number={phoneNumber}
+            onNumberChange={setPhoneNumber}
+          />
+        </LabelInputContainer>
+
         <LabelInputContainer className="mb-4">
           <Label htmlFor="subject">Subject</Label>
           <Input id="subject" placeholder="Let's work together!" type="text" />
         </LabelInputContainer>
+
         <LabelInputContainer className="mb-8">
           <Label htmlFor="message">Message</Label>
           <Textarea id="message" placeholder="Write your message here..." rows={4} />
