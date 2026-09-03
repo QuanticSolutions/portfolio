@@ -1,8 +1,11 @@
 'use client'
 import React, { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Star, ChevronDown, CheckCircle, AlertCircle } from 'lucide-react';
+import { Star, CheckCircle, AlertCircle } from 'lucide-react';
 import emailjs from '@emailjs/browser';
+import { CountrySelect } from '../contact/CountrySelect';
+import { PhoneInput } from '../contact/PhoneInput';
+import { countries } from '../contact/countries';
 
 export default function GrowthPlatformSection() {
   const form = useRef();
@@ -10,10 +13,15 @@ export default function GrowthPlatformSection() {
     firstName: '',
     lastName: '',
     businessEmail: '',
-    phoneNumber: '',
-    country: '',
     message: '',
   });
+
+  // Country / phone are handled separately since they use the
+  // reusable CountrySelect + PhoneInput components
+  const [countryIso, setCountryIso] = useState('');
+  const [dialCode, setDialCode] = useState('+92');
+  const [phoneRaw, setPhoneRaw] = useState('');
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null); // 'success', 'error', or null
 
@@ -31,13 +39,14 @@ export default function GrowthPlatformSection() {
   };
 
   const validateForm = () => {
-    const requiredFields = ['firstName', 'lastName', 'businessEmail', 'phoneNumber', 'country', 'message'];
-    return requiredFields.every(field => formData[field].trim() !== '');
+    const requiredTextFields = ['firstName', 'lastName', 'businessEmail', 'message'];
+    const textFieldsValid = requiredTextFields.every(field => formData[field].trim() !== '');
+    return textFieldsValid && countryIso !== '' && phoneRaw.trim() !== '';
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       setSubmitStatus('error');
       setTimeout(() => setSubmitStatus(null), 5000);
@@ -47,6 +56,9 @@ export default function GrowthPlatformSection() {
     setIsSubmitting(true);
     setSubmitStatus(null);
 
+    const countryName = countries.find(c => c.iso === countryIso)?.name || countryIso;
+    const fullPhone = `${dialCode} ${phoneRaw}`;
+
     try {
       // Send email using EmailJS
       const result = await emailjs.send(
@@ -55,8 +67,8 @@ export default function GrowthPlatformSection() {
         {
           from_name: `${formData.firstName} ${formData.lastName}`,
           from_email: formData.businessEmail,
-          phone: formData.phoneNumber,
-          country: formData.country,
+          phone: fullPhone,
+          country: countryName,
           message: formData.message,
           to_name: 'Your Company Name', // Replace with your company name
         },
@@ -65,16 +77,17 @@ export default function GrowthPlatformSection() {
 
       console.log('Email sent successfully:', result);
       setSubmitStatus('success');
-      
+
       // Reset form after successful submission
       setFormData({
         firstName: '',
         lastName: '',
         businessEmail: '',
-        phoneNumber: '',
-        country: '',
         message: '',
       });
+      setCountryIso('');
+      setDialCode('+92');
+      setPhoneRaw('');
 
       // Clear success message after 5 seconds
       setTimeout(() => setSubmitStatus(null), 5000);
@@ -91,7 +104,7 @@ export default function GrowthPlatformSection() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-teal-900 via-black to-teal-900">
       <div className="flex flex-col lg:flex-row min-h-screen">
-        
+
         {/* Left Section */}
         <motion.div
           className="w-full lg:w-1/2 bg-black/70 backdrop-blur-md p-6 sm:p-10 lg:p-16 flex flex-col justify-center"
@@ -112,7 +125,7 @@ export default function GrowthPlatformSection() {
               <span className="text-teal-400">digital</span> <span className="text-emerald-400">solution</span> with us.
             </h1>
             <p className="text-slate-300 mb-8 text-base sm:text-lg leading-relaxed">
-              We craft scalable, secure, and high-performance digital products tailored 
+              We craft scalable, secure, and high-performance digital products tailored
               to your business needs. From web platforms to mobile apps and enterprise solutions,
               we turn your ideas into reality.
             </p>
@@ -182,62 +195,46 @@ export default function GrowthPlatformSection() {
 
               <form ref={form} onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <InputField 
-                    label="First Name*" 
-                    name="firstName" 
-                    value={formData.firstName} 
-                    onChange={handleInputChange} 
-                    required 
+                  <InputField
+                    label="First Name*"
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleInputChange}
+                    required
                   />
-                  <InputField 
-                    label="Last Name*" 
-                    name="lastName" 
-                    value={formData.lastName} 
-                    onChange={handleInputChange} 
-                    required 
-                  />
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <InputField 
-                    label="Business Email*" 
-                    name="businessEmail" 
-                    type="email" 
-                    value={formData.businessEmail} 
-                    onChange={handleInputChange} 
-                    required 
-                  />
-                  <InputField 
-                    label="Phone Number*" 
-                    name="phoneNumber" 
-                    type="tel" 
-                    value={formData.phoneNumber} 
-                    onChange={handleInputChange} 
-                    required 
+                  <InputField
+                    label="Last Name*"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleInputChange}
+                    required
                   />
                 </div>
+
+                <InputField
+                  label="Business Email*"
+                  name="businessEmail"
+                  type="email"
+                  value={formData.businessEmail}
+                  onChange={handleInputChange}
+                  required
+                />
+
+                <div>
+                  <label className="block text-sm text-slate-300 mb-1">Phone Number*</label>
+                  <PhoneInput
+                    dialCode={dialCode}
+                    onDialCodeChange={setDialCode}
+                    number={phoneRaw}
+                    onNumberChange={setPhoneRaw}
+                  />
+                </div>
+
                 <div>
                   <label className="block text-sm text-slate-300 mb-1">Country*</label>
-                  <div className="relative">
-                    <select
-                      name="country"
-                      value={formData.country}
-                      onChange={handleInputChange}
-                      className="w-full px-3 py-2 bg-slate-700/50 border border-slate-600/50 rounded text-white focus:outline-none focus:ring-2 focus:ring-teal-400 focus:border-transparent transition-all duration-300 appearance-none"
-                      required
-                    >
-                      <option value="">Please Select</option>
-                      <option value="United States">United States</option>
-                      <option value="United Kingdom">United Kingdom</option>
-                      <option value="Canada">Canada</option>
-                      <option value="Australia">Australia</option>
-                      <option value="Germany">Germany</option>
-                      <option value="France">France</option>
-                      <option value="Japan">Japan</option>
-                      <option value="Other">Other</option>
-                    </select>
-                    <ChevronDown className="absolute right-3 top-3 w-4 h-4 text-slate-400 pointer-events-none" />
-                  </div>
+                  <CountrySelect value={countryIso} onChange={setCountryIso} />
                 </div>
+
                 <div>
                   <label className="block text-sm text-slate-300 mb-1">Tell us about your project*</label>
                   <textarea
@@ -255,8 +252,8 @@ export default function GrowthPlatformSection() {
                   type="submit"
                   disabled={isSubmitting}
                   className={`w-full font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg mt-6 ${
-                    isSubmitting 
-                      ? 'bg-slate-600 cursor-not-allowed' 
+                    isSubmitting
+                      ? 'bg-slate-600 cursor-not-allowed'
                       : 'bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-600 hover:to-emerald-600'
                   } text-white`}
                   whileHover={!isSubmitting ? { scale: 1.05 } : {}}
