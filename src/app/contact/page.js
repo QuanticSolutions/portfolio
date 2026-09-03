@@ -227,12 +227,13 @@ export default function GrowthPlatformSection() {
                     onDialCodeChange={setDialCode}
                     number={phoneRaw}
                     onNumberChange={setPhoneRaw}
+                    variant="dark"
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm text-slate-300 mb-1">Country*</label>
-                  <CountrySelect value={countryIso} onChange={setCountryIso} />
+                  <CountrySelect value={countryIso} onChange={setCountryIso} variant="dark" />
                 </div>
 
                 <div>
