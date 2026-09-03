@@ -3,9 +3,9 @@ import React, { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Star, CheckCircle, AlertCircle } from 'lucide-react';
 import emailjs from '@emailjs/browser';
-import { CountrySelect } from '../contact/CountrySelect';
-import { PhoneInput } from '../contact/PhoneInput';
-import { countries } from '../contact/countries';
+import { CountrySelect } from '@/components/contact/CountrySelect';
+import { PhoneInput } from '@/components/contact/PhoneInput';
+import { countries } from '@/components/contact/countries';
 
 export default function GrowthPlatformSection() {
   const form = useRef();
