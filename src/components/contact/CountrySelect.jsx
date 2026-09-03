@@ -2,10 +2,38 @@
 import React, { useState, useRef, useEffect } from "react";
 import { countries } from "./countries";
 
-export function CountrySelect({ value, onChange, id = "country" }) {
+const styles = {
+  light: {
+    trigger:
+      "shadow-input flex h-10 w-full items-center justify-between rounded-md border-none bg-gray-50 px-3 text-sm text-neutral-700 focus:outline-none focus:ring-2 focus:ring-neutral-400 dark:bg-zinc-800 dark:text-white",
+    placeholder: "text-neutral-400",
+    chevron: "text-neutral-400",
+    panel:
+      "absolute z-20 mt-1 w-full rounded-md border border-neutral-200 bg-white shadow-lg dark:border-zinc-700 dark:bg-zinc-900",
+    search:
+      "w-full border-b border-neutral-200 bg-transparent px-3 py-2 text-sm outline-none dark:border-zinc-700 dark:text-white",
+    empty: "px-3 py-2 text-sm text-neutral-400",
+    item: "cursor-pointer px-3 py-2 text-sm hover:bg-neutral-100 dark:text-neutral-200 dark:hover:bg-zinc-800",
+  },
+  dark: {
+    trigger:
+      "flex h-10 w-full items-center justify-between rounded bg-slate-700/50 border border-slate-600/50 px-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-teal-400 focus:border-transparent transition-all duration-300",
+    placeholder: "text-slate-400",
+    chevron: "text-slate-400",
+    panel:
+      "absolute z-20 mt-1 w-full rounded-md border border-slate-600/50 bg-slate-800/95 backdrop-blur-md shadow-lg",
+    search:
+      "w-full border-b border-slate-600/50 bg-transparent px-3 py-2 text-sm text-white placeholder-slate-400 outline-none",
+    empty: "px-3 py-2 text-sm text-slate-400",
+    item: "cursor-pointer px-3 py-2 text-sm text-slate-200 hover:bg-slate-700/70",
+  },
+};
+
+export function CountrySelect({ value, onChange, id = "country", variant = "light" }) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const wrapperRef = useRef(null);
+  const s = styles[variant] || styles.light;
 
   const selected = countries.find((c) => c.iso === value);
 
@@ -30,30 +58,26 @@ export function CountrySelect({ value, onChange, id = "country" }) {
         type="button"
         id={id}
         onClick={() => setOpen((o) => !o)}
-        className="shadow-input flex h-10 w-full items-center justify-between rounded-md border-none bg-gray-50 px-3 text-sm text-neutral-700 focus:outline-none focus:ring-2 focus:ring-neutral-400 dark:bg-zinc-800 dark:text-white"
+        className={s.trigger}
       >
-        <span className={selected ? "" : "text-neutral-400"}>
+        <span className={selected ? "" : s.placeholder}>
           {selected ? selected.name : "Select a country"}
         </span>
-        <span className="text-neutral-400">▾</span>
+        <span className={s.chevron}>▾</span>
       </button>
 
       {open && (
-        <div className="absolute z-20 mt-1 w-full rounded-md border border-neutral-200 bg-white shadow-lg dark:border-zinc-700 dark:bg-zinc-900">
+        <div className={s.panel}>
           <input
             autoFocus
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search country..."
-            className="w-full border-b border-neutral-200 bg-transparent px-3 py-2 text-sm outline-none dark:border-zinc-700 dark:text-white"
+            className={s.search}
           />
           <ul className="max-h-56 overflow-y-auto py-1">
-            {filtered.length === 0 && (
-              <li className="px-3 py-2 text-sm text-neutral-400">
-                No results
-              </li>
-            )}
+            {filtered.length === 0 && <li className={s.empty}>No results</li>}
             {filtered.map((c) => (
               <li
                 key={c.iso}
@@ -62,7 +86,7 @@ export function CountrySelect({ value, onChange, id = "country" }) {
                   setOpen(false);
                   setQuery("");
                 }}
-                className="cursor-pointer px-3 py-2 text-sm hover:bg-neutral-100 dark:text-neutral-200 dark:hover:bg-zinc-800"
+                className={s.item}
               >
                 {c.name}
               </li>
