@@ -2,6 +2,7 @@
 import React, { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Star, CheckCircle, AlertCircle } from 'lucide-react';
+import { Turnstile } from '@marsidev/react-turnstile';
 import { CountrySelect } from '@/components/contact/CountrySelect';
 import { PhoneInput } from '@/components/contact/PhoneInput';
 import { countries } from '@/components/contact/countries';
@@ -21,6 +22,7 @@ export default function GrowthPlatformSection() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
+  const [turnstileToken, setTurnstileToken] = useState('');
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -36,7 +38,7 @@ export default function GrowthPlatformSection() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!validateForm()) {
+    if (!validateForm() || !turnstileToken) {
       setSubmitStatus('error');
       setTimeout(() => setSubmitStatus(null), 5000);
       return;
@@ -59,6 +61,7 @@ export default function GrowthPlatformSection() {
           phone: fullPhone,
           country: countryName,
           message: formData.message,
+          turnstileToken,
         }),
       });
 
@@ -69,6 +72,7 @@ export default function GrowthPlatformSection() {
       setCountryIso('');
       setDialCode('+92');
       setPhoneRaw('');
+      setTurnstileToken('');
       setTimeout(() => setSubmitStatus(null), 5000);
 
     } catch (error) {
@@ -226,6 +230,16 @@ export default function GrowthPlatformSection() {
                     placeholder="Describe your project, goals, timeline, and any specific requirements..."
                     required
                   ></textarea>
+                </div>
+
+                <div className="pt-2">
+                  <Turnstile
+                    siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ''}
+                    onSuccess={setTurnstileToken}
+                    onExpire={() => setTurnstileToken('')}
+                    onError={() => setTurnstileToken('')}
+                    options={{ theme: 'dark' }}
+                  />
                 </div>
 
                 <motion.button
