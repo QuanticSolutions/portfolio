@@ -1,20 +1,50 @@
 import { Resend } from 'resend';
 import { NextResponse } from 'next/server';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export async function POST(request) {
   try {
-    const { firstName, lastName, businessEmail, phone, country, message } =
-      await request.json();
+    const {
+      firstName,
+      lastName,
+      businessEmail,
+      phone,
+      country,
+      message,
+      turnstileToken,
+    } = await request.json();
 
-    if (!firstName || !lastName || !businessEmail || !phone || !country || !message) {
+    if (!firstName || !lastName || !businessEmail || !phone || !country || !message || !turnstileToken) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
       );
     }
 
+    if (!process.env.TURNSTILE_SECRET_KEY) {
+      console.error('Turnstile secret key is not configured');
+      return NextResponse.json({ error: 'Service is not configured' }, { status: 500 });
+    }
+
+    const turnstileResponse = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        secret: process.env.TURNSTILE_SECRET_KEY,
+        response: turnstileToken,
+      }),
+    });
+    const turnstileResult = await turnstileResponse.json();
+
+    if (!turnstileResult.success) {
+      return NextResponse.json({ error: 'Turnstile verification failed' }, { status: 403 });
+    }
+
+    if (!process.env.RESEND_API_KEY) {
+      console.error('Resend API key is not configured');
+      return NextResponse.json({ error: 'Service is not configured' }, { status: 500 });
+    }
+
+    const resend = new Resend(process.env.RESEND_API_KEY);
     const { data, error } = await resend.emails.send({
       from: 'Quantic Solutions <info@quanticsols.com>', // replace once your domain is verified
       to: ['info@quanticsols.com'], // where you want to receive submissions
