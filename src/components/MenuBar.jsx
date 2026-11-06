@@ -18,6 +18,7 @@ function Navbar({ className }) {
   return (
     <div className={twMerge("inset-x-0 mx-auto z-50", className)}>
       <Menu setActive={setActive}>
+        <Link href="/">Home</Link>
         <Link href="/services">Services</Link>
         <Link href="/about">About</Link>
         <MenuItem active={active} setActive={setActive} item="Projects">
@@ -53,7 +54,6 @@ function Navbar({ className }) {
             </Link>
           </div>
         </MenuItem>
-        <Link href="/pricing">Pricing</Link>
       </Menu>
     </div>
   );
