@@ -18,16 +18,16 @@ import { ChevronDown } from "lucide-react";
 export function Nav() {
   const navItems = [
     {
+      name: "Home",
+      link: "/",
+    },
+    {
       name: "About",
       link: "/about",
     },
     {
       name: "Services",
       link: "/services",
-    },
-    {
-      name: "Pricing",
-      link: "/pricing",
     },
     {
       name: "Portfolio",
